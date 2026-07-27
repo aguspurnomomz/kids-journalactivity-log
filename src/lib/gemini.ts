@@ -55,7 +55,7 @@ export async function generateWeeklySummary(childName: string, logs: any[]) {
 /**
  * Tanya-Jawab Konsultasi AI
  */
-export async function askAIConsultation(childName: string, history: any[], userQuestion: string) {
+export async function askAIConsultation(childName: string, _messages: { role: "user" | "ai"; text: string; }[], userQuestion: string) {
   const prompt = `[INSTRUKSI SISTEM: Anda adalah asisten AI ahli tumbuh kembang anak yang mendampingi orang tua dari anak bernama "${childName}". Berikan saran stimulasi motorik yang praktis, aman, edukatif, dan bernada empati].\n\nPertanyaan Orang Tua: ${userQuestion}`;
 
   return await callGeminiAPI(prompt);

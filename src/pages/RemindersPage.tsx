@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { type Child } from '../types/database';
-import { Calendar as CalendarIcon, Plus, Trash2, Bell, Clock, Phone, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Plus, Trash2, Bell, Clock, Phone, Loader2 } from 'lucide-react';
 
 interface ScheduledReminder {
   id: string;

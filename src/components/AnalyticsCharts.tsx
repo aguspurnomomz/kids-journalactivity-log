@@ -1,4 +1,3 @@
-import React from 'react';
 import { type ActivityLog } from '../types/database';
 import {
   ResponsiveContainer,
