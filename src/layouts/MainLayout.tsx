@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { NavLink, Outlet, useOutletContext, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { LayoutDashboard, Users, LogOut, Sparkles, Menu, X, Search, Bell, Mail, PlusCircle } from 'lucide-react';
-import logoImage from '../assets/logo.png'; // <-- 1. Impor logo dari folder assets (sesuaikan nama file jika .svg atau .png)
+import logoImage from '../assets/logo.png';
 
 export const MainLayout = () => {
   const { session } = useOutletContext<{ session: any }>();
@@ -10,8 +10,13 @@ export const MainLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate('/login');
+    // Memunculkan kotak dialog konfirmasi sebelum logout
+    const confirmLogout = window.confirm('Apakah Anda yakin akan keluar?');
+    
+    if (confirmLogout) {
+      await supabase.auth.signOut();
+      navigate('/login');
+    }
   };
 
   const navItems = [
@@ -27,7 +32,6 @@ export const MainLayout = () => {
       {/* Mobile Navbar Header */}
       <div className="md:hidden bg-white border-b border-slate-100 p-4 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-2.5">
-          {/* 2. Ganti Kotak Ungu + Teks dengan Logo Asset */}
           <img src={logoImage} alt="Journstep Logo" className="h-8 w-auto object-contain" />
         </div>
         <button
@@ -47,7 +51,6 @@ export const MainLayout = () => {
         <div>
           {/* Logo Brand di Sidebar */}
           <div className="p-6 flex items-center gap-3">
-            {/* 3. Ganti juga logo di sidebar */}
             <img src={logoImage} alt="Journstep Logo" className="h-9 w-auto object-contain" />
           </div>
 
