@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { type Child } from '../types/database';
-import { Plus, Trash2, Bell, Clock, Phone, Loader2 } from 'lucide-react';
+import { Plus, Trash2, Clock, Phone, Loader2, Sparkles } from 'lucide-react';
 
 interface ScheduledReminder {
   id: string;
@@ -18,8 +18,6 @@ export const RemindersPage = () => {
   const { session } = useOutletContext<{ session: any }>();
   const [children, setChildren] = useState<Child[]>([]);
   const [reminders, setReminders] = useState<ScheduledReminder[]>([]);
-  
-  // Form State
   const [selectedChildId, setSelectedChildId] = useState('');
   const [title, setTitle] = useState('');
   const [scheduledTime, setScheduledTime] = useState('');
@@ -30,7 +28,6 @@ export const RemindersPage = () => {
   const fetchData = async () => {
     if (!session?.user) return;
 
-    // Fetch Anak
     const { data: childrenData } = await supabase
       .from('children')
       .select('*')
@@ -41,7 +38,6 @@ export const RemindersPage = () => {
       setSelectedChildId(childrenData[0].id);
     }
 
-    // Fetch Jadwal Pengingat
     const { data: remindersData } = await supabase
       .from('scheduled_reminders')
       .select('*, children(name)')
@@ -71,13 +67,11 @@ export const RemindersPage = () => {
     setIsSaving(true);
 
     try {
-      // Format Nomor HP
       let formattedPhone = whatsappNumber.trim();
       if (formattedPhone.startsWith('0')) {
         formattedPhone = '62' + formattedPhone.slice(1);
       }
 
-      // 1. Insert ke scheduled_reminders
       const { data: reminderData, error: reminderError } = await supabase
         .from('scheduled_reminders')
         .insert({
@@ -93,9 +87,8 @@ export const RemindersPage = () => {
 
       if (reminderError) throw reminderError;
 
-      // 2. Generate Personal Message & Insert ke scheduled_reminder_tasks
       const childObj = children.find((c) => c.id === selectedChildId);
-      const messageContent = `*PENGINGAT LATIHAN MOTORIK* 🔔\n\nHalo Ayah/Bunda! Saatnya dampingi *${childObj?.name || 'Anak'}* untuk latihan motorik.\n\n📌 *Agenda:* ${title.trim()}\n⏰ *Jadwal:* ${new Date(scheduledTime).toLocaleString('id-ID')}\n\nMari catat perkembangannya di aplikasi! 💪🏼`;
+      const messageContent = `*PENGINGAT LATIHAN MOTORIK* 🔔\n\nHalo Ayah/Bunda! Saatnya dampingi *${childObj?.name || 'Anak'}* untuk latihan motorik.\n\n📌 *Agenda:* ${title.trim()}\n⏰ *Jadwal:* ${new Date(scheduledTime).toLocaleString('id-ID')}\n\nMari catat perkembangannya di aplikasi! 💪🏼✨`;
 
       const { error: taskError } = await supabase.from('scheduled_reminder_tasks').insert({
         reminder_id: reminderData.id,
@@ -106,7 +99,6 @@ export const RemindersPage = () => {
 
       if (taskError) throw taskError;
 
-      // Reset
       setTitle('');
       setScheduledTime('');
       setWhatsappNumber('');
@@ -140,19 +132,25 @@ export const RemindersPage = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs">
-        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-          <Bell className="w-5 h-5 text-indigo-600" /> Pengingat Latihan via WhatsApp
-        </h2>
-        <p className="text-xs text-slate-400 mt-1">
-          Atur jadwal pengingat otomatis yang akan dikirim langsung ke WhatsApp Ayah/Bunda via Fonnte.
-        </p>
+      <div className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white p-7 rounded-3xl shadow-lg shadow-indigo-200/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-indigo-400/30" />
+        <Sparkles className="w-16 h-16 absolute right-32 top-2 text-indigo-300/20" />
+
+        <div className="relative z-10 max-w-md">
+          <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-indigo-100 backdrop-blur-md">
+            Pengingat Aktivitas Harian
+          </span>
+          <h2 className="text-2xl font-bold mt-2 leading-snug">
+            Jadwalkan Aktivitas Hari Ini 
+          </h2>
+          <p className="text-xs text-indigo-100 mt-1">
+            Atur jadwal pengingat otomatis yang akan dikirim langsung ke WhatsApp Ayah/Bunda.
+          </p>
+        </div>
       </div>
 
-      {/* Form Tambah Pengingat */}
       <form onSubmit={handleSaveReminder} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
-        <h3 className="text-sm font-bold text-slate-800">Buat Jadwal Pengingat Baru</h3>
+        <h3 className="text-sm font-bold text-slate-800">Buat Jadwal Pengingat</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -220,7 +218,6 @@ export const RemindersPage = () => {
         </button>
       </form>
 
-      {/* List Daftar Pengingat */}
       <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
         <h3 className="text-sm font-bold text-slate-800">Daftar Jadwal Pengingat</h3>
 

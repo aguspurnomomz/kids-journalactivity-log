@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink, Outlet, useOutletContext, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { LayoutDashboard, Users, LogOut, Sparkles, Menu, X, Search, Bell, Mail, PlusCircle } from 'lucide-react';
+import logoImage from '../assets/logo.png'; // <-- 1. Impor logo dari folder assets (sesuaikan nama file jika .svg atau .png)
 
 export const MainLayout = () => {
   const { session } = useOutletContext<{ session: any }>();
@@ -13,22 +14,21 @@ export const MainLayout = () => {
     navigate('/login');
   };
 
-    const navItems = [
-        { to: '/', label: 'Dashboard', icon: LayoutDashboard },
-        { to: '/children', label: 'Data Anak', icon: Users },
-        { to: '/input-aktivitas', label: 'Input Aktivitas', icon: PlusCircle },
-        { to: '/ai-konsultasi', label: 'Konsultasi & AI', icon: Sparkles },
-        { to: '/pengingat', label: 'Pengingat WA', icon: Bell } 
-    ];
+  const navItems = [
+    { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+    { to: '/children', label: 'Data Anak', icon: Users },
+    { to: '/input-aktivitas', label: 'Input Aktivitas', icon: PlusCircle },
+    { to: '/ai-konsultasi', label: 'Konsultasi dengan AI', icon: Sparkles },
+    { to: '/pengingat', label: 'Pengingat', icon: Bell } 
+  ];
 
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col md:flex-row text-slate-800 font-sans">
+      {/* Mobile Navbar Header */}
       <div className="md:hidden bg-white border-b border-slate-100 p-4 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold">
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <span className="font-bold text-slate-800 text-base">MotorikLog</span>
+          {/* 2. Ganti Kotak Ungu + Teks dengan Logo Asset */}
+          <img src={logoImage} alt="Journstep Logo" className="h-8 w-auto object-contain" />
         </div>
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -38,17 +38,17 @@ export const MainLayout = () => {
         </button>
       </div>
 
+      {/* Sidebar Desktop */}
       <aside
         className={`fixed md:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-100 flex flex-col justify-between transition-transform duration-300 ease-in-out ${
           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         <div>
+          {/* Logo Brand di Sidebar */}
           <div className="p-6 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-200">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <span className="font-bold text-slate-800 text-lg tracking-tight">MotorikLog</span>
+            {/* 3. Ganti juga logo di sidebar */}
+            <img src={logoImage} alt="Journstep Logo" className="h-9 w-auto object-contain" />
           </div>
 
           <div className="px-4 py-2">

@@ -7,6 +7,7 @@ import { ChildrenPage } from './pages/ChildrenPage';
 import { InputActivityPage } from './pages/InputActivityPage';
 import { AIConsultPage } from './pages/AIConsultPage';
 import { RemindersPage } from './pages/RemindersPage';
+import { ActivityLogsPage } from './pages/ActivityLogsPage';
 
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
             <Route path="/input-aktivitas" element={<InputActivityPage />} />
             <Route path="/ai-konsultasi" element={<AIConsultPage />} />
             <Route path="/pengingat" element={<RemindersPage />} />
+            <Route path="/log-aktivitas" element={<ActivityLogsPage />} />
           </Route>
         </Route>
       </Routes>

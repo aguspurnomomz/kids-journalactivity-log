@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { type ActivityLog } from '../types/database';
-import { Activity, Clock, Award, Star, Plus, Check, X, Image as ImageIcon, Camera, FileImage } from 'lucide-react';
+import { Activity, Clock, Award, Star, Plus, Check, X, Image as ImageIcon, Camera, FileImage, Loader2 } from 'lucide-react';
 
 const DEFAULT_CATEGORIES = [
   'Motorik Halus (Menulis, Mencepit, Memotong)',
@@ -10,33 +9,31 @@ const DEFAULT_CATEGORIES = [
   'Sensori / Permainan Tekstur',
 ];
 
+interface ImageItem {
+  file: File;
+  previewUrl: string;
+}
+
 export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () => void }) => {
   const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORIES[0]);
 
-  // State Mode Tambah Kategori
   const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [savingCategory, setSavingCategory] = useState(false);
 
-  // State Form Utama
   const [activityName, setActivityName] = useState('');
   const [duration, setDuration] = useState(15);
   const [assistance, setAssistance] = useState<'Independent' | 'Partial Support' | 'Full Support'>('Partial Support');
   const [focusScore, setFocusScore] = useState(4);
   const [notes, setNotes] = useState('');
 
-  // State Foto Kegiatan
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
+  const [imageItems, setImageItems] = useState<ImageItem[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Ref untuk mentrigger klik input tersembunyi
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
-  // Fetch Kategori Kustom
   useEffect(() => {
     const fetchCustomCategories = async () => {
       const {
@@ -57,37 +54,60 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
     fetchCustomCategories();
   }, []);
 
-  // Handler Request Perizinan Kamera & Trigger Input Kamera
   const handleTriggerCamera = async () => {
+    if (imageItems.length >= 5) {
+      alert('Maksimal foto yang dapat diunggah adalah 5 foto per aktivitas!');
+      return;
+    }
     try {
-      // Minta/Cek perizinan kamera secara langsung ke browser/HP jika didukung
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        // Matikan stream sementara (hanya untuk pengujian perizinan)
         stream.getTracks().forEach((track) => track.stop());
       }
-      // Buka kamera via input file
       cameraInputRef.current?.click();
     } catch (err) {
       alert('Akses kamera ditolak atau tidak tersedia. Harap izinkan akses kamera pada pengaturan browser HP Anda.');
     }
   };
 
-  // Handler Trigger Galeri / Dokumen
   const handleTriggerGallery = () => {
+    if (imageItems.length >= 5) {
+      alert('Maksimal foto yang dapat diunggah adalah 5 foto per aktivitas!');
+      return;
+    }
     galleryInputRef.current?.click();
   };
 
-  // Handler Pilih File Foto / Kamera
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
+    if (!e.target.files || e.target.files.length === 0) return;
+
+    const files = Array.from(e.target.files);
+    
+    if (imageItems.length + files.length > 5) {
+      alert('Maksimal foto yang dapat diunggah adalah 5 foto per aktivitas!');
+      return;
     }
+
+    const newItems: ImageItem[] = files.map((file) => ({
+      file,
+      previewUrl: URL.createObjectURL(file),
+    }));
+
+    setImageItems((prev) => [...prev, ...newItems]);
+
+    e.target.value = '';
   };
 
-  // Handler Simpan Kategori Baru
+  const handleRemoveImage = (indexToRemove: number) => {
+    setImageItems((prev) => {
+      const target = prev[indexToRemove];
+      if (target?.previewUrl) {
+        URL.revokeObjectURL(target.previewUrl);
+      }
+      return prev.filter((_, idx) => idx !== indexToRemove);
+    });
+  };
+
   const handleSaveCategoryToDB = async () => {
     if (!newCategoryName.trim()) return;
     setSavingCategory(true);
@@ -114,57 +134,57 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
     }
   };
 
-  // Submit Jurnal + Upload Foto ke Supabase Storage
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    let uploadedImageUrl: string | undefined = undefined;
-
-    // 1. Upload Foto jika ada file yang dipilih
-    if (imageFile) {
-      const fileExt = imageFile.name.split('.').pop();
+    const uploadedUrls: string[] = [];
+    for (const item of imageItems) {
+      const fileExt = item.file.name.split('.').pop();
       const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
       const filePath = `activities/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('activity-photos')
-        .upload(filePath, imageFile);
+        .upload(filePath, item.file);
 
       if (uploadError) {
-        alert('Gagal mengunggah foto: ' + uploadError.message);
+        alert('Gagal mengunggah beberapa foto: ' + uploadError.message);
         setLoading(false);
         return;
       }
 
-      // Ambil Public URL foto
       const { data: urlData } = supabase.storage
         .from('activity-photos')
         .getPublicUrl(filePath);
 
-      uploadedImageUrl = urlData.publicUrl;
+      if (urlData?.publicUrl) {
+        uploadedUrls.push(urlData.publicUrl);
+      }
     }
 
-    // 2. Simpan Data Jurnal ke Database
-    const newLog: ActivityLog = {
+    const newLog = {
       child_id: childId,
       activity_category: selectedCategory,
-      activity_name: activityName,
+      activity_name: activityName.trim(),
       duration_minutes: Number(duration),
       assistance_level: assistance,
       focus_score: focusScore,
-      notes,
-      image_url: uploadedImageUrl,
+      notes: notes.trim(),
+      image_urls: uploadedUrls, 
+      image_url: uploadedUrls[0] || null, 
+      logged_at: new Date().toISOString(),
     };
 
     const { error } = await supabase.from('activity_logs').insert([newLog]);
 
     setLoading(false);
+
     if (!error) {
       setActivityName('');
       setNotes('');
-      setImageFile(null);
-      setImagePreview(null);
+      imageItems.forEach((item) => URL.revokeObjectURL(item.previewUrl));
+      setImageItems([]);
       onSave();
     } else {
       alert('Gagal menyimpan aktivitas: ' + error.message);
@@ -174,11 +194,10 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
       <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-        <Activity className="w-4 h-4 text-indigo-600" /> Catat Aktivitas Latihan
+        <Activity className="w-4 h-4 text-indigo-600" /> Catat Aktivitas Hari Ini
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Kategori */}
         <div>
           <div className="flex items-center justify-between mb-1">
             <label className="block text-[11px] font-bold text-slate-500">Kategori Latihan</label>
@@ -233,7 +252,6 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
           )}
         </div>
 
-        {/* Nama Aktivitas */}
         <div>
           <label className="block text-[11px] font-bold text-slate-500 mb-1">Nama Aktivitas</label>
           <input
@@ -302,13 +320,16 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
         />
       </div>
 
-      {/* Pilihan Foto Kegiatan: Kamera & Galeri */}
       <div>
-        <label className="block text-[11px] font-bold text-slate-500 mb-2 flex items-center gap-1">
-          <ImageIcon className="w-3.5 h-3.5 text-indigo-600" /> Foto Kegiatan (Opsional)
-        </label>
+        <div className="flex items-center justify-between mb-2">
+          <label className="block text-[11px] font-bold text-slate-500 flex items-center gap-1">
+            <ImageIcon className="w-3.5 h-3.5 text-indigo-600" /> Foto Kegiatan (Maks. 5 Foto)
+          </label>
+          <span className="text-[10px] font-semibold text-slate-400">
+            {imageItems.length} / 5 Terpilih
+          </span>
+        </div>
 
-        {/* Hidden Inputs */}
         <input
           ref={cameraInputRef}
           type="file"
@@ -321,45 +342,50 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
           ref={galleryInputRef}
           type="file"
           accept="image/*"
+          multiple
           onChange={handleImageChange}
           className="hidden"
         />
 
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-          {/* Tombol Ambil dari Kamera */}
-          <button
-            type="button"
-            onClick={handleTriggerCamera}
-            className="flex-1 flex items-center justify-center gap-2 p-3.5 border border-indigo-200 bg-indigo-50/50 hover:bg-indigo-100/60 text-indigo-700 rounded-2xl transition font-semibold text-xs shadow-2xs"
-          >
-            <Camera className="w-4 h-4" /> Ambil dari Kamera
-          </button>
+        <div className="space-y-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <button
+              type="button"
+              onClick={handleTriggerCamera}
+              disabled={imageItems.length >= 5}
+              className="flex-1 flex items-center justify-center gap-2 p-3 border border-indigo-200 bg-indigo-50/50 hover:bg-indigo-100/60 text-indigo-700 rounded-2xl transition font-semibold text-xs shadow-2xs disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Camera className="w-4 h-4" /> Ambil Kamera
+            </button>
 
-          {/* Tombol Pilih dari Galeri/Dokumen */}
-          <button
-            type="button"
-            onClick={handleTriggerGallery}
-            className="flex-1 flex items-center justify-center gap-2 p-3.5 border border-slate-200 bg-slate-50/50 hover:bg-slate-100 text-slate-700 rounded-2xl transition font-semibold text-xs shadow-2xs"
-          >
-            <FileImage className="w-4 h-4 text-slate-500" /> Pilih dari Galeri / File
-          </button>
+            <button
+              type="button"
+              onClick={handleTriggerGallery}
+              disabled={imageItems.length >= 5}
+              className="flex-1 flex items-center justify-center gap-2 p-3 border border-slate-200 bg-slate-50/50 hover:bg-slate-100 text-slate-700 rounded-2xl transition font-semibold text-xs shadow-2xs disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <FileImage className="w-4 h-4 text-slate-500" /> Pilih Galeri / File
+            </button>
+          </div>
 
-          {/* Preview Foto Jika Terpilih */}
-          {imagePreview && (
-            <div className="relative w-20 h-20 rounded-2xl overflow-hidden border border-slate-200 shrink-0 shadow-xs self-center">
-              <img src={imagePreview} alt="Preview Foto" className="w-full h-full object-cover" />
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setImageFile(null);
-                  setImagePreview(null);
-                }}
-                className="absolute top-1 right-1 p-1 bg-slate-900/60 hover:bg-slate-900 text-white rounded-full transition"
-                title="Hapus foto"
-              >
-                <X className="w-3 h-3" />
-              </button>
+          {imageItems.length > 0 && (
+            <div className="flex flex-wrap gap-2.5 pt-1">
+              {imageItems.map((item, index) => (
+                <div key={index} className="relative w-20 h-20 rounded-2xl overflow-hidden border border-slate-200 shrink-0 shadow-xs group">
+                  <img src={item.previewUrl} alt={`Preview ${index + 1}`} className="w-full h-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(index)}
+                    className="absolute top-1 right-1 p-1 bg-slate-900/70 hover:bg-slate-900 text-white rounded-full transition"
+                    title="Hapus Foto"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                  <span className="absolute bottom-1 left-1 bg-slate-900/60 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-md">
+                    #{index + 1}
+                  </span>
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -368,9 +394,10 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
       <button
         type="submit"
         disabled={loading}
-        className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-2xl text-xs transition shadow-md shadow-indigo-100 disabled:opacity-50"
+        className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-2xl text-xs transition shadow-md shadow-indigo-100 disabled:opacity-50 flex items-center gap-2"
       >
-        {loading ? 'Menyimpan & Mengunggah...' : 'Simpan Log Jurnal'}
+        {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+        {loading ? 'Menyimpan & Mengunggah Foto...' : 'Simpan Aktivitas'}
       </button>
     </form>
   );

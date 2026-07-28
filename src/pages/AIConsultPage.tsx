@@ -11,18 +11,15 @@ export const AIConsultPage = () => {
   const [selectedChild, setSelectedChild] = useState<Child | null>(null);
   const [logs, setLogs] = useState<ActivityLog[]>([]);
 
-  // State AI Summary
   const [summary, setSummary] = useState<string | null>(null);
   const [loadingSummary, setLoadingSummary] = useState(false);
 
-  // State Chat Konsultasi
   const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([
     { role: 'ai', text: 'Halo Ayah/Bunda! Ada yang ingin dikonsultasikan seputar tumbuh kembang atau stimulasi motorik buah hati?' },
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [loadingChat, setLoadingChat] = useState(false);
 
-  // 1. Fetch Data Anak & Log
   useEffect(() => {
     const fetchData = async () => {
       if (!session?.user) return;
@@ -54,7 +51,6 @@ export const AIConsultPage = () => {
     fetchLogs();
   }, [selectedChild]);
 
-  // Handler Generate Rangkuman Mingguan
   const handleGenerateSummary = async () => {
     if (!selectedChild) return;
     setLoadingSummary(true);
@@ -68,7 +64,6 @@ export const AIConsultPage = () => {
     }
   };
 
-  // Handler Kirim Pesan Konsultasi AI
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputMessage.trim() || loadingChat) return;
@@ -90,23 +85,21 @@ export const AIConsultPage = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6">
-      {/* Top Header */}
       <div className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white p-7 rounded-3xl shadow-lg shadow-indigo-200/50 relative overflow-hidden flex flex-col justify-between">
         <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-indigo-400/30" />
         <div className="relative z-10">
           <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-indigo-100 backdrop-blur-md">
-            Asisten AI Pintar
+            Agent AI
           </span>
           <h1 className="text-2xl font-bold mt-3 leading-snug">
             Konsultasi & Rangkuman Perkembangan Anak
           </h1>
           <p className="text-xs text-indigo-100 mt-1 max-w-lg">
-            Dapatkan analisis mingguan otomatis berdasarkan jurnal latihan serta konsultasi langsung seputar stimulasi motorik bersama AI.
+            Dapatkan analisis mingguan otomatis berdasarkan jurnal latihan serta konsultasi langsung seputar stimulasi motorik melalui AI.
           </p>
         </div>
       </div>
 
-      {/* Selector Anak */}
       {children.length > 0 && (
         <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-xs flex items-center gap-3">
           <span className="text-xs font-bold text-slate-500">Pilih Anak:</span>
@@ -128,10 +121,7 @@ export const AIConsultPage = () => {
         </div>
       )}
 
-      {/* Grid Konten: Kiri (Rangkuman AI), Kanan (Chat Konsultasi) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        {/* Kolom 1: Rangkuman Mingguan Otomatis */}
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs flex flex-col justify-between space-y-4">
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -165,7 +155,6 @@ export const AIConsultPage = () => {
           </p>
         </div>
 
-        {/* Kolom 2: Chat Konsultasi AI */}
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs flex flex-col justify-between h-[450px]">
           <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
             <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-xs">
@@ -177,7 +166,6 @@ export const AIConsultPage = () => {
             </div>
           </div>
 
-          {/* Area Pesan Chat */}
           <div className="flex-1 overflow-y-auto space-y-3 py-3 pr-1">
             {messages.map((msg, index) => (
               <div
@@ -212,7 +200,6 @@ export const AIConsultPage = () => {
             )}
           </div>
 
-          {/* Input Form Chat */}
           <form onSubmit={handleSendMessage} className="flex gap-2 pt-3 border-t border-slate-100">
             <input
               type="text"
@@ -230,7 +217,6 @@ export const AIConsultPage = () => {
             </button>
           </form>
         </div>
-
       </div>
     </div>
   );

@@ -57,13 +57,11 @@ export const ChildModal = ({ isOpen, onClose, onSuccess, userId, childToEdit }: 
     let response;
 
     if (isEditMode && childToEdit) {
-      // Operation Update
       response = await supabase
         .from('children')
         .update(payload)
         .eq('id', childToEdit.id);
     } else {
-      // Operation Insert
       response = await supabase.from('children').insert([payload]);
     }
 
@@ -109,7 +107,7 @@ export const ChildModal = ({ isOpen, onClose, onSuccess, userId, childToEdit }: 
             <input
               type="text"
               required
-              placeholder="e.g. Shaka"
+              placeholder="nama anak"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-3.5 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none text-xs"
@@ -146,7 +144,7 @@ export const ChildModal = ({ isOpen, onClose, onSuccess, userId, childToEdit }: 
               <input
                 type="number"
                 step="0.1"
-                placeholder="e.g. 105"
+                placeholder="100"
                 value={height}
                 onChange={(e) => setHeight(e.target.value)}
                 className="w-full px-3.5 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none text-xs"
@@ -157,7 +155,7 @@ export const ChildModal = ({ isOpen, onClose, onSuccess, userId, childToEdit }: 
               <input
                 type="number"
                 step="0.1"
-                placeholder="e.g. 16.5"
+                placeholder="15"
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
                 className="w-full px-3.5 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none text-xs"

@@ -29,7 +29,6 @@ export const AnalyticsCharts = ({ logs }: Props) => {
     );
   }
 
-  // 1. Format Data Tren Skor Fokus & Durasi (Diurutkan dari tanggal tertua ke terbaru)
   const chartData = [...logs]
     .reverse()
     .map((log) => ({
@@ -41,7 +40,6 @@ export const AnalyticsCharts = ({ logs }: Props) => {
       activity: log.activity_name,
     }));
 
-  // 2. Agregasi Data per Kategori (Untuk Donut Chart)
   const categoryMap: { [key: string]: number } = {};
   logs.forEach((log) => {
     categoryMap[log.activity_category] = (categoryMap[log.activity_category] || 0) + 1;
@@ -54,9 +52,7 @@ export const AnalyticsCharts = ({ logs }: Props) => {
 
   return (
     <div className="space-y-6">
-      {/* Grid Grafik 2 Kolom */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Chart 1: Tren Skor Fokus */}
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
           <div>
             <h4 className="font-bold text-slate-800 text-sm">Tren Skor Fokus Anak</h4>
@@ -90,7 +86,6 @@ export const AnalyticsCharts = ({ logs }: Props) => {
           </div>
         </div>
 
-        {/* Chart 2: Distribusi Kategori Latihan (Donut Chart) */}
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
           <div>
             <h4 className="font-bold text-slate-800 text-sm">Distribusi Kategori Latihan</h4>
@@ -123,7 +118,6 @@ export const AnalyticsCharts = ({ logs }: Props) => {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          {/* Legend Custom */}
           <div className="flex flex-wrap gap-2 justify-center pt-2">
             {categoryData.map((entry, idx) => (
               <div key={idx} className="flex items-center gap-1.5 text-[10px] font-medium text-slate-500">
@@ -137,8 +131,6 @@ export const AnalyticsCharts = ({ logs }: Props) => {
           </div>
         </div>
       </div>
-
-      {/* Chart 3: Durasi Latihan Per Sesi (Bar Chart) */}
       <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
         <div>
           <h4 className="font-bold text-slate-800 text-sm">Durasi Latihan (Menit)</h4>

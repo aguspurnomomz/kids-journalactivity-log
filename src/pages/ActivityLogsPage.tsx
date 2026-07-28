@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { ActivityForm } from '../components/ActivityForm';
 import { type Child, type ActivityLog } from '../types/database';
-import { Plus, Baby, Sparkles, Calendar, ArrowRight, X, Images } from 'lucide-react';
-import { ChildModal } from '../components/ChildModal';
+import { Sparkles, ArrowLeft, Filter, Calendar, RefreshCw, X, Images } from 'lucide-react';
 
-export const InputActivityPage = () => {
+export const ActivityLogsPage = () => {
   const { session } = useOutletContext<{ session: any }>();
   const navigate = useNavigate();
 
@@ -14,58 +12,69 @@ export const InputActivityPage = () => {
   const [selectedChildId, setSelectedChildId] = useState<string>('');
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAddChildModalOpen, setIsAddChildModalOpen] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
-  const fetchChildren = async () => {
-    if (!session?.user) return;
+  const [filterCategory, setFilterCategory] = useState<string>('all');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
 
-    const { data } = await supabase
-      .from('children')
-      .select('*')
-      .eq('user_id', session.user.id)
-      .order('created_at', { ascending: true });
+  useEffect(() => {
+    const fetchChildren = async () => {
+      if (!session?.user) return;
 
-    if (data && data.length > 0) {
-      setChildren(data);
-      if (!selectedChildId) {
+      const { data } = await supabase
+        .from('children')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .order('created_at', { ascending: true });
+
+      if (data && data.length > 0) {
+        setChildren(data);
         setSelectedChildId(data[0].id);
       }
-    } else {
-      setChildren([]);
-    }
-    setLoading(false);
-  };
+      setLoading(false);
+    };
 
-  const fetchLogs = async (childId: string) => {
-    if (!childId) return;
-    const { data } = await supabase
+    fetchChildren();
+  }, [session]);
+
+  const fetchLogs = async () => {
+    if (!selectedChildId) return;
+
+    let query = supabase
       .from('activity_logs')
       .select('*')
-      .eq('child_id', childId)
+      .eq('child_id', selectedChildId)
       .order('logged_at', { ascending: false });
 
+    if (filterCategory !== 'all') {
+      query = query.eq('activity_category', filterCategory);
+    }
+
+    if (startDate) {
+      query = query.gte('logged_at', `${startDate}T00:00:00`);
+    }
+
+    if (endDate) {
+      query = query.lte('logged_at', `${endDate}T23:59:59`);
+    }
+
+    const { data } = await query;
     setLogs(data || []);
   };
 
   useEffect(() => {
-    fetchChildren();
-  }, [session]);
+    fetchLogs();
+  }, [selectedChildId, filterCategory, startDate, endDate]);
 
-  useEffect(() => {
-    if (selectedChildId) {
-      fetchLogs(selectedChildId);
-    }
-  }, [selectedChildId]);
-
-  const handleSaved = () => {
-    if (selectedChildId) {
-      fetchLogs(selectedChildId); 
-    }
+  const handleResetFilter = () => {
+    setFilterCategory('all');
+    setStartDate('');
+    setEndDate('');
   };
 
   if (loading) {
-    return <div className="text-slate-400 font-medium py-12 text-center text-xs">Memuat data...</div>;
+    return <div className="text-slate-400 font-medium py-12 text-center text-xs">Memuat log aktivitas...</div>;
   }
 
   return (
@@ -75,69 +84,107 @@ export const InputActivityPage = () => {
         <Sparkles className="w-16 h-16 absolute right-32 top-2 text-indigo-300/20" />
 
         <div className="relative z-10 max-w-md">
-          <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-indigo-100 backdrop-blur-md">
-            Input Aktivitas Harian
-          </span>
-          <h2 className="text-2xl font-bold mt-2 leading-snug">
-            Jurnal Aktivitas Hari Ini
-          </h2>
+          <button
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-md mb-3 transition"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" /> Kembali
+          </button>
+          <h2 className="text-2xl font-bold leading-snug">Riwayat Semua Aktivitas</h2>
           <p className="text-xs text-indigo-100 mt-1">
-            Pilih profil anak dan isi detail jurnal aktivitas harian secara teratur.
+            Filter dan pantau seluruh aktivitas harian anak anda.
           </p>
         </div>
-
-        {children.length > 0 && (
-          <button
-            onClick={() => setIsAddChildModalOpen(true)}
-            className="relative z-10 flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 rounded-full text-xs font-semibold transition shadow-md shrink-0"
-          >
-            <Plus className="w-4 h-4 text-indigo-400" /> Tambah Data Anak
-          </button>
-        )}
       </div>
 
       {children.length > 0 ? (
         <div className="space-y-6">
-          {/* Selector Anak */}
-          <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-xs space-y-2">
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {children.map((child) => (
-                <button
-                  key={child.id}
-                  onClick={() => setSelectedChildId(child.id)}
-                  className={`px-4 py-2.5 rounded-2xl text-xs font-semibold transition flex items-center gap-2 border shrink-0 ${
-                    selectedChildId === child.id
-                      ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
-                      : 'bg-slate-50 text-slate-600 border-slate-200/60 hover:bg-slate-100'
-                  }`}
+          <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-5">
+            <div>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {children.map((child) => (
+                  <button
+                    key={child.id}
+                    onClick={() => setSelectedChildId(child.id)}
+                    className={`px-4 py-2 rounded-2xl text-xs font-semibold transition flex items-center gap-2 border shrink-0 ${
+                      selectedChildId === child.id
+                        ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
+                        : 'bg-slate-50 text-slate-600 border-slate-200/60 hover:bg-slate-100'
+                    }`}
+                  >
+                    <span>{child.name}</span>
+                    <span className="opacity-80">({child.gender === 'L' ? '👦' : '👧'})</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+              <div>
+                <label className="block text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
+                  <Filter className="w-3.5 h-3.5 text-indigo-600" /> Kategori Kegiatan
+                </label>
+                <select
+                  value={filterCategory}
+                  onChange={(e) => setFilterCategory(e.target.value)}
+                  className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none"
                 >
-                  <span>{child.name}</span>
-                  <span className="opacity-80">({child.gender === 'L' ? '👦' : '👧'})</span>
-                </button>
-              ))}
+                  <option value="all">Semua Kategori</option>
+                  <option value="Motorik Halus (Menulis, Mencepit, Memotong)">Motorik Halus</option>
+                  <option value="Motorik Kasar (Melompat, Berlari, Lempar Bola)">Motorik Kasar</option>
+                  <option value="Koordinasi & Keseimbangan">Koordinasi & Keseimbangan</option>
+                  <option value="Sensori / Permainan Tekstur">Sensori</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5 text-indigo-600" /> Dari Tanggal
+                </label>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none"
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <label className="block text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5 text-indigo-600" /> Sampai Tanggal
+                  </label>
+                  <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none"
+                  />
+                </div>
+
+                {(filterCategory !== 'all' || startDate || endDate) && (
+                  <button
+                    onClick={handleResetFilter}
+                    className="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl transition flex items-center justify-center shrink-0"
+                    title="Reset Filter"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
-          {selectedChildId && (
-            <ActivityForm childId={selectedChildId} onSave={handleSaved} />
-          )}
-
-          <div className="space-y-3 pt-4 border-t border-slate-100">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-indigo-600" /> Riwayat Aktivitas
-              </h3>
-              <button
-                onClick={() => navigate('/log-aktivitas')}
-                className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1"
-              >
-                Lihat Semua Aktivitas <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between px-1">
+              <span className="text-xs font-bold text-slate-500">
+                Menampilkan {logs.length} catatan aktivitas
+              </span>
             </div>
 
             {logs.length === 0 ? (
-              <div className="text-center py-8 bg-white rounded-3xl border border-dashed border-slate-200 text-slate-400 text-xs">
-                Belum ada catatan aktivitas untuk anak ini.
+              <div className="text-center py-12 bg-white rounded-3xl border border-dashed border-slate-200 text-slate-400 text-xs">
+                Tidak ada riwayat aktivitas yang sesuai dengan filter.
               </div>
             ) : (
               <div className="space-y-4">
@@ -213,19 +260,8 @@ export const InputActivityPage = () => {
           </div>
         </div>
       ) : (
-        <div className="text-center py-12 bg-white rounded-3xl border border-dashed border-slate-200 space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto">
-            <Baby className="w-6 h-6" />
-          </div>
-          <p className="text-xs text-slate-400 max-w-xs mx-auto">
-            Belum ada profil anak terhubung. Tambahkan profil anak terlebih dahulu sebelum mengisi jurnal.
-          </p>
-          <button
-            onClick={() => setIsAddChildModalOpen(true)}
-            className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs px-5 py-2.5 rounded-2xl transition shadow-md shadow-indigo-100"
-          >
-            <Plus className="w-4 h-4" /> Tambah Data Anak
-          </button>
+        <div className="text-center py-12 bg-white rounded-3xl border border-dashed border-slate-200 text-slate-400 text-xs">
+          Belum ada profil anak terhubung.
         </div>
       )}
 
@@ -244,15 +280,6 @@ export const InputActivityPage = () => {
             <img src={selectedImageUrl} alt="Preview Foto" className="w-full max-h-[80vh] object-contain rounded-2xl" />
           </div>
         </div>
-      )}
-
-      {session?.user && (
-        <ChildModal
-          isOpen={isAddChildModalOpen}
-          onClose={() => setIsAddChildModalOpen(false)}
-          onSuccess={fetchChildren}
-          userId={session.user.id}
-        />
       )}
     </div>
   );

@@ -9,8 +9,6 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 Deno.serve(async () => {
   try {
     const nowISO = new Date().toISOString();
-
-    // 1. Ambil task pending yang scheduled_reminders.scheduled_time <= nowISO
     const { data: tasks, error } = await supabase
       .from('scheduled_reminder_tasks')
       .select('*, scheduled_reminders!inner(id, scheduled_time, status)')
@@ -20,7 +18,6 @@ Deno.serve(async () => {
     if (error) throw error;
 
     for (const task of tasks || []) {
-      // Kirim via Fonnte
       const response = await fetch('https://api.fonnte.com/send', {
         method: 'POST',
         headers: { Authorization: FONNTE_TOKEN },
@@ -33,7 +30,6 @@ Deno.serve(async () => {
       const resJson = await response.json();
 
       if (resJson.status) {
-        // Update Task & Reminder Status jika berhasil
         await supabase
           .from('scheduled_reminder_tasks')
           .update({ status: 'completed', sent_at: new Date().toISOString() })
@@ -44,7 +40,6 @@ Deno.serve(async () => {
           .update({ status: 'completed' })
           .eq('id', task.reminder_id);
       } else {
-        // Update Task & Reminder Status jika gagal
         await supabase
           .from('scheduled_reminder_tasks')
           .update({ status: 'failed', error_message: resJson.reason || 'Fonnte error' })

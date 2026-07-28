@@ -3,7 +3,7 @@ import { useOutletContext, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ChildModal } from '../components/ChildModal';
 import { type Child } from '../types/database';
-import { Plus, ChevronRight, User, Trash2, Pencil } from 'lucide-react';
+import { Plus, ChevronRight, User, Trash2, Pencil, Sparkles } from 'lucide-react';
 
 export const ChildrenPage = () => {
   const { session } = useOutletContext<{ session: any }>();
@@ -68,20 +68,26 @@ export const ChildrenPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-100 shadow-xs">
-        <div>
-          <h2 className="text-xl font-bold text-slate-800">Kelola Data Anak</h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Kelola profil anak yang didaftarkan ke sistem pemantauan motorik.
+      <div className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white p-7 rounded-3xl shadow-lg shadow-indigo-200/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-indigo-400/30" />
+        <Sparkles className="w-16 h-16 absolute right-32 top-2 text-indigo-300/20" />
+        <div className="relative z-10 max-w-md">
+          <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-indigo-100 backdrop-blur-md">
+            Kelola Profil Anak
+          </span>
+          <h2 className="text-2xl font-bold mt-2 leading-snug">
+            Data Profil Anak
+          </h2>
+          <p className="text-xs text-indigo-100 mt-1">
+            Kelola profil anak anda, dengan memasukan data anak ke system kami melalui form di bawah ini. 
           </p>
         </div>
-
-        <button
+        {/* <button
           onClick={handleOpenAddModal}
-          className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-2xl text-xs font-semibold transition shadow-md shadow-indigo-100"
+          className="relative z-10 flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 rounded-full text-xs font-semibold transition shadow-md shrink-0"
         >
-          <Plus className="w-4 h-4" /> Tambah Profil Baru
-        </button>
+          <Plus className="w-4 h-4 text-indigo-400" /> Tambah Data Anak
+        </button> */}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -144,7 +150,7 @@ export const ChildrenPage = () => {
           className="p-5 rounded-3xl border-2 border-dashed border-slate-200 hover:border-indigo-400/50 hover:bg-indigo-50/20 text-slate-400 hover:text-indigo-600 transition flex flex-col items-center justify-center gap-2 min-h-[110px]"
         >
           <Plus className="w-6 h-6" />
-          <span className="text-xs font-semibold">Tambah Profil Anak Baru</span>
+          <span className="text-xs font-semibold">Tambah Data Anak</span>
         </button>
       </div>
 
