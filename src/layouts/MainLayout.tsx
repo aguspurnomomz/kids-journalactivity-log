@@ -10,7 +10,6 @@ export const MainLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
-    // Memunculkan kotak dialog konfirmasi sebelum logout
     const confirmLogout = window.confirm('Apakah Anda yakin akan keluar?');
     
     if (confirmLogout) {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Eye, EyeOff, Activity, Heart, Award } from 'lucide-react';
-import logoImage from '../assets/logo.png'; // <-- 1. Impor logo dari folder assets (sesuaikan jika .svg atau .ico)
+import logoImage from '../assets/logo.png'; 
 
 export const Auth = () => {
   const navigate = useNavigate();
@@ -75,7 +75,6 @@ export const Auth = () => {
         
         <div className="w-full lg:w-1/2 p-6 lg:p-10 flex flex-col justify-between">
           <div className="flex items-center gap-2.5">
-            {/* 2. Ganti Kotak Ungu + Teks Journstep dengan Logo dari Asset */}
             <img src={logoImage} alt="Journstep Logo" className="h-9 w-auto object-contain" />
           </div>
 
