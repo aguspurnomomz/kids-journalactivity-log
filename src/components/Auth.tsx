@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Eye, EyeOff, Activity, Heart } from 'lucide-react';
+import { Eye, EyeOff} from 'lucide-react';
 import logoImage from '../assets/logo.png'; 
 import brandLogo from '../assets/brand_logo_001.png'; // Sesuaikan dengan nama file gambar di folder assets kamu
 
@@ -81,14 +81,8 @@ export const Auth = () => {
 
           <div className="my-auto py-6">
             <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
-              {isRegister ? 'Buat Akun Baru' : 'Halo Ayah Bunda'}
+              {isRegister ? 'Buat Akun Baru' : 'Masuk Gunakan Akun Ayah Bunda'}
             </h1>
-            <p className="text-slate-400 text-xs mb-8 leading-relaxed max-w-xs">
-              {isRegister
-                ? 'Daftar sekarang untuk mulai mencatat dan memantau tumbuh kembang motorik anak.'
-                : 'Catat dan pantau aktivitas perkembangan motorik dan aktivitas pembelajaran harian buah hati dengan mudah.'}
-            </p>
-
             {error && (
               <div className="p-3.5 bg-red-50 border border-red-100 text-red-600 rounded-2xl text-xs mb-6">
                 {error}
@@ -139,7 +133,7 @@ export const Auth = () => {
                   minLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password"
+                  placeholder="Kata Sandi"
                   className="w-full px-5 py-3.5 pr-12 border border-slate-200/90 rounded-full focus:ring-2 focus:ring-[#01acbf]/20 focus:border-[#01acbf] focus:outline-none text-xs transition placeholder:text-slate-400"
                 />
                 <button
@@ -154,7 +148,7 @@ export const Auth = () => {
               {!isRegister && (
                 <div className="text-right">
                   <a href="#forgot" onClick={(e) => e.preventDefault()} className="text-[11px] font-semibold text-slate-400 hover:text-[#01acbf] transition">
-                    Forgot Password?
+                    Lupa Kata Sandi?
                   </a>
                 </div>
               )}
@@ -164,19 +158,19 @@ export const Auth = () => {
                 disabled={loading}
                 className="w-full bg-[#01acbf] hover:bg-[#0198a8] text-white font-semibold py-3.5 rounded-full text-xs transition shadow-lg shadow-teal-200/50 disabled:opacity-50 mt-2"
               >
-                {loading ? 'Memproses...' : isRegister ? 'Register Now' : 'Login'}
+                {loading ? 'Memproses...' : isRegister ? 'Daftar Sekarang' : 'Masuk'}
               </button>
             </form>
           </div>
 
           <div className="text-center text-xs text-slate-400">
-            {isRegister ? 'Already a member?' : 'Not a member?'}{' '}
+            {isRegister ? 'Sudah punya akun?' : 'Belum mendaftar?'}{' '}
             <button
               type="button"
               onClick={toggleMode}
               className="text-[#01acbf] font-bold hover:underline ml-1"
             >
-              {isRegister ? 'Login now' : 'Register now'}
+              {isRegister ? 'Masuk' : 'Daftar Sekarang'}
             </button>
           </div>
         </div>
@@ -184,19 +178,6 @@ export const Auth = () => {
         {/* Sisi Kanan: Background Polos / Apa Adanya Tanpa Gradien */}
         <div className="hidden lg:flex w-1/2 bg-[#FAF9F6] rounded-[2.5rem] p-8 flex-col justify-between relative overflow-hidden border border-slate-100">
           <div className="relative z-10 flex justify-between items-start">
-            <div className="bg-white backdrop-blur-md p-3.5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#01acbf] text-white flex items-center justify-center font-bold">
-                <Activity className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Perkembangan</p>
-                <p className="font-bold text-slate-800 text-xs">Aktivitas Belajar</p>
-              </div>
-            </div>
-
-            <div className="w-10 h-10 rounded-full bg-white backdrop-blur-md flex items-center justify-center text-[#f47946] border border-slate-100 shadow-xs">
-              <Heart className="w-5 h-5 fill-orange-100" />
-            </div>
           </div>
 
           <div className="relative z-10 text-center my-auto py-8">
@@ -211,10 +192,10 @@ export const Auth = () => {
             </div>
 
             <h3 className="text-xl font-bold text-slate-800 max-w-xs mx-auto leading-snug">
-              Pantau Milestone Anak dengan Mudah & Terstruktur
+              Pantau Milestone Kegiatan dan Aktivitas Belajar Motorik Buah Hati Anda
             </h3>
             <p className="text-slate-400 text-xs mt-2 max-w-xs mx-auto">
-              Simpan catatan latihan harian dan dapatkan rekomendasi AI untuk mendukung stimulasi motoriknya.
+              Simpan catatan jurnal harian dan dapatkan rekomendasi AI untuk mendukung stimulasi motoriknya.
             </p>
           </div>
 
