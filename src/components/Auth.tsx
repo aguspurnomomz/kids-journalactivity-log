@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Eye, EyeOff, Activity, Heart, Award } from 'lucide-react';
+import { Eye, EyeOff, Activity, Heart } from 'lucide-react';
 import logoImage from '../assets/logo.png'; 
+import brandLogo from '../assets/brand_logo_001.png'; // Sesuaikan dengan nama file gambar di folder assets kamu
 
 export const Auth = () => {
   const navigate = useNavigate();
@@ -70,8 +71,8 @@ export const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center p-4 lg:p-8 font-sans">
-      <div className="bg-white rounded-3xl shadow-2xl shadow-indigo-100/50 border border-slate-100 max-w-5xl w-full min-h-[640px] flex flex-col lg:flex-row overflow-hidden p-3 lg:p-4 gap-4">
+    <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-4 lg:p-8 font-sans">
+      <div className="bg-white rounded-3xl shadow-2xl shadow-teal-100/50 border border-slate-100 max-w-5xl w-full min-h-[640px] flex flex-col lg:flex-row overflow-hidden p-3 lg:p-4 gap-4">
         
         <div className="w-full lg:w-1/2 p-6 lg:p-10 flex flex-col justify-between">
           <div className="flex items-center gap-2.5">
@@ -104,7 +105,7 @@ export const Auth = () => {
                       value={fullname}
                       onChange={(e) => setFullname(e.target.value)}
                       placeholder="Nama Lengkap"
-                      className="w-full px-5 py-3.5 border border-slate-200/90 rounded-full focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 focus:outline-none text-xs transition placeholder:text-slate-400"
+                      className="w-full px-5 py-3.5 border border-slate-200/90 rounded-full focus:ring-2 focus:ring-[#01acbf]/20 focus:border-[#01acbf] focus:outline-none text-xs transition placeholder:text-slate-400"
                     />
                   </div>
                   <div>
@@ -114,7 +115,7 @@ export const Auth = () => {
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       placeholder="Username"
-                      className="w-full px-5 py-3.5 border border-slate-200/90 rounded-full focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 focus:outline-none text-xs transition placeholder:text-slate-400"
+                      className="w-full px-5 py-3.5 border border-slate-200/90 rounded-full focus:ring-2 focus:ring-[#01acbf]/20 focus:border-[#01acbf] focus:outline-none text-xs transition placeholder:text-slate-400"
                     />
                   </div>
                 </>
@@ -127,7 +128,7 @@ export const Auth = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
-                  className="w-full px-5 py-3.5 border border-slate-200/90 rounded-full focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 focus:outline-none text-xs transition placeholder:text-slate-400"
+                  className="w-full px-5 py-3.5 border border-slate-200/90 rounded-full focus:ring-2 focus:ring-[#01acbf]/20 focus:border-[#01acbf] focus:outline-none text-xs transition placeholder:text-slate-400"
                 />
               </div>
 
@@ -139,7 +140,7 @@ export const Auth = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
-                  className="w-full px-5 py-3.5 pr-12 border border-slate-200/90 rounded-full focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 focus:outline-none text-xs transition placeholder:text-slate-400"
+                  className="w-full px-5 py-3.5 pr-12 border border-slate-200/90 rounded-full focus:ring-2 focus:ring-[#01acbf]/20 focus:border-[#01acbf] focus:outline-none text-xs transition placeholder:text-slate-400"
                 />
                 <button
                   type="button"
@@ -152,7 +153,7 @@ export const Auth = () => {
 
               {!isRegister && (
                 <div className="text-right">
-                  <a href="#forgot" onClick={(e) => e.preventDefault()} className="text-[11px] font-semibold text-slate-400 hover:text-indigo-600 transition">
+                  <a href="#forgot" onClick={(e) => e.preventDefault()} className="text-[11px] font-semibold text-slate-400 hover:text-[#01acbf] transition">
                     Forgot Password?
                   </a>
                 </div>
@@ -161,7 +162,7 @@ export const Auth = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3.5 rounded-full text-xs transition shadow-lg shadow-slate-200/80 disabled:opacity-50 mt-2"
+                className="w-full bg-[#01acbf] hover:bg-[#0198a8] text-white font-semibold py-3.5 rounded-full text-xs transition shadow-lg shadow-teal-200/50 disabled:opacity-50 mt-2"
               >
                 {loading ? 'Memproses...' : isRegister ? 'Register Now' : 'Login'}
               </button>
@@ -173,17 +174,18 @@ export const Auth = () => {
             <button
               type="button"
               onClick={toggleMode}
-              className="text-indigo-600 font-bold hover:underline ml-1"
+              className="text-[#01acbf] font-bold hover:underline ml-1"
             >
               {isRegister ? 'Login now' : 'Register now'}
             </button>
           </div>
         </div>
 
-        <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-indigo-50/80 via-purple-50/50 to-indigo-100/60 rounded-[2.5rem] p-8 flex-col justify-between relative overflow-hidden border border-indigo-100/40">
+        {/* Sisi Kanan: Background Polos / Apa Adanya Tanpa Gradien */}
+        <div className="hidden lg:flex w-1/2 bg-[#FAF9F6] rounded-[2.5rem] p-8 flex-col justify-between relative overflow-hidden border border-slate-100">
           <div className="relative z-10 flex justify-between items-start">
-            <div className="bg-white/80 backdrop-blur-md p-3.5 rounded-2xl border border-white/60 shadow-sm flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold">
+            <div className="bg-white backdrop-blur-md p-3.5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#01acbf] text-white flex items-center justify-center font-bold">
                 <Activity className="w-5 h-5" />
               </div>
               <div>
@@ -192,20 +194,19 @@ export const Auth = () => {
               </div>
             </div>
 
-            <div className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-indigo-600 border border-white/60 shadow-xs">
-              <Heart className="w-5 h-5 fill-indigo-100" />
+            <div className="w-10 h-10 rounded-full bg-white backdrop-blur-md flex items-center justify-center text-[#f47946] border border-slate-100 shadow-xs">
+              <Heart className="w-5 h-5 fill-orange-100" />
             </div>
           </div>
 
           <div className="relative z-10 text-center my-auto py-8">
             <div className="relative inline-block mb-6">
-              <div className="w-32 h-32 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 p-1 shadow-xl shadow-indigo-200/80">
-                <div className="w-full h-full rounded-full bg-white flex items-center justify-center text-4xl">
-                  👶
-                </div>
-              </div>
-              <div className="absolute -bottom-2 -right-2 bg-white px-3 py-1.5 rounded-full border border-indigo-100 shadow-sm flex items-center gap-1.5 text-[10px] font-bold text-indigo-600">
-                <Award className="w-3.5 h-3.5" /> 84% Focus Score
+              <div className="w-32 h-32 rounded-full bg-white p-2 shadow-xl shadow-slate-100 border border-slate-100 flex items-center justify-center overflow-hidden">
+                <img 
+                  src={brandLogo} 
+                  alt="Logo Brand" 
+                  className="w-full h-full object-contain rounded-full" 
+                />
               </div>
             </div>
 
@@ -218,11 +219,10 @@ export const Auth = () => {
           </div>
 
           <div className="relative z-10 flex items-center justify-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-indigo-200"></div>
-            <div className="w-6 h-2 rounded-full bg-indigo-600"></div>
-            <div className="w-2 h-2 rounded-full bg-indigo-200"></div>
+            <div className="w-2 h-2 rounded-full bg-slate-200"></div>
+            <div className="w-6 h-2 rounded-full bg-[#01acbf]"></div>
+            <div className="w-2 h-2 rounded-full bg-slate-200"></div>
           </div>
-          <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-indigo-300/20 rounded-full blur-2xl pointer-events-none" />
         </div>
       </div>
     </div>
