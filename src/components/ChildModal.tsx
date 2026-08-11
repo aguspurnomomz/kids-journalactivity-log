@@ -78,9 +78,9 @@ export const ChildModal = ({ isOpen, onClose, onSuccess, userId, childToEdit }: 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
       <div className="bg-white rounded-3xl shadow-xl border border-slate-100 max-w-md w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between p-5 border-b border-slate-100 bg-slate-50/50">
+        <div className="flex items-center justify-between p-5 border-b border-slate-100 bg-[#FAF9F6]">
           <div className="flex items-center gap-2.5">
-            <div className="p-2.5 bg-indigo-50 text-indigo-600 rounded-2xl">
+            <div className="p-2.5 bg-teal-50 text-[#01acbf] rounded-2xl">
               {isEditMode ? <Edit3 className="w-5 h-5" /> : <Baby className="w-5 h-5" />}
             </div>
             <h3 className="font-bold text-slate-800 text-sm">
@@ -110,7 +110,7 @@ export const ChildModal = ({ isOpen, onClose, onSuccess, userId, childToEdit }: 
               placeholder="nama anak"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3.5 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none text-xs"
+              className="w-full px-3.5 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-[#01acbf]/20 focus:border-[#01acbf] focus:outline-none text-xs"
             />
           </div>
 
@@ -122,7 +122,7 @@ export const ChildModal = ({ isOpen, onClose, onSuccess, userId, childToEdit }: 
                 required
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
-                className="w-full px-3 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none text-xs bg-white"
+                className="w-full px-3 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-[#01acbf]/20 focus:border-[#01acbf] focus:outline-none text-xs bg-white"
               />
             </div>
             <div>
@@ -130,7 +130,7 @@ export const ChildModal = ({ isOpen, onClose, onSuccess, userId, childToEdit }: 
               <select
                 value={gender}
                 onChange={(e) => setGender(e.target.value as 'L' | 'P')}
-                className="w-full px-3 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none text-xs bg-white"
+                className="w-full px-3 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-[#01acbf]/20 focus:border-[#01acbf] focus:outline-none text-xs bg-white"
               >
                 <option value="L">Laki-Laki</option>
                 <option value="P">Perempuan</option>
@@ -147,7 +147,7 @@ export const ChildModal = ({ isOpen, onClose, onSuccess, userId, childToEdit }: 
                 placeholder="100"
                 value={height}
                 onChange={(e) => setHeight(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none text-xs"
+                className="w-full px-3.5 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-[#01acbf]/20 focus:border-[#01acbf] focus:outline-none text-xs"
               />
             </div>
             <div>
@@ -158,7 +158,7 @@ export const ChildModal = ({ isOpen, onClose, onSuccess, userId, childToEdit }: 
                 placeholder="15"
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none text-xs"
+                className="w-full px-3.5 py-2.5 border border-slate-200/80 rounded-2xl focus:ring-2 focus:ring-[#01acbf]/20 focus:border-[#01acbf] focus:outline-none text-xs"
               />
             </div>
           </div>
@@ -174,7 +174,7 @@ export const ChildModal = ({ isOpen, onClose, onSuccess, userId, childToEdit }: 
             <button
               type="submit"
               disabled={loading}
-              className="px-5 py-2.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition shadow-md shadow-indigo-100 disabled:opacity-50"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#01acbf] hover:bg-[#0198a8] rounded-2xl transition shadow-md shadow-teal-100 disabled:opacity-50"
             >
               {loading ? 'Memproses...' : isEditMode ? 'Simpan Perubahan' : 'Simpan Data'}
             </button>
