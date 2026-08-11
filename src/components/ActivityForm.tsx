@@ -14,7 +14,15 @@ interface ImageItem {
   previewUrl: string;
 }
 
-export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () => void }) => {
+// 1. Tambahkan initialCategory dan initialActivityName di sini
+interface ActivityFormProps {
+  childId: string;
+  onSave: () => void;
+  initialCategory?: string;
+  initialActivityName?: string;
+}
+
+export const ActivityForm = ({ childId, onSave, initialCategory, initialActivityName }: ActivityFormProps) => {
   const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORIES[0]);
 
@@ -33,6 +41,19 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
 
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
+
+  // 2. Set nilai otomatis jika user memilih dari menu jadwal kegiatan
+  useEffect(() => {
+    if (initialCategory && categories.includes(initialCategory)) {
+      setSelectedCategory(initialCategory);
+    }
+  }, [initialCategory, categories]);
+
+  useEffect(() => {
+    if (initialActivityName) {
+      setActivityName(initialActivityName);
+    }
+  }, [initialActivityName]);
 
   useEffect(() => {
     const fetchCustomCategories = async () => {
@@ -94,7 +115,6 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
     }));
 
     setImageItems((prev) => [...prev, ...newItems]);
-
     e.target.value = '';
   };
 

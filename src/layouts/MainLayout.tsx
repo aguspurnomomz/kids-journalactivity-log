@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useOutletContext, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { LayoutDashboard, Users, LogOut, Sparkles, Search, Bell, Mail, PlusCircle } from 'lucide-react';
+import { CalendarDays } from 'lucide-react';
 import logoImage from '../assets/logo.png';
 
 export const MainLayout = () => {
@@ -19,9 +20,10 @@ export const MainLayout = () => {
   const navItems = [
     { to: '/', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/children', label: 'Data Anak', icon: Users },
-    { to: '/input-aktivitas', label: 'Catat Aktivitas', icon: PlusCircle },
-    { to: '/ai-konsultasi', label: 'AI Konsul', icon: Sparkles },
-    { to: '/pengingat', label: 'Pengingat', icon: Bell } 
+    { to: '/input-aktivitas', label: 'Aktivitas Hari Ini', icon: PlusCircle },
+    { to: '/jadwal', label: 'Jadwal', icon: CalendarDays },
+    { to: '/ai-konsultasi', label: 'AI Konsul', icon: Sparkles }
+    // { to: '/pengingat', label: 'Pengingat', icon: Bell } 
   ];
 
   return (

@@ -8,7 +8,7 @@ import { InputActivityPage } from './pages/InputActivityPage';
 import { AIConsultPage } from './pages/AIConsultPage';
 import { RemindersPage } from './pages/RemindersPage';
 import { ActivityLogsPage } from './pages/ActivityLogsPage';
-
+import { SchedulesPage } from './pages/SchedulesPage'; // <-- Import halaman Jadwal Kegiatan baru
 
 export default function App() {
   return (
@@ -23,6 +23,7 @@ export default function App() {
             <Route path="/" element={<DashboardPage />} />
             <Route path="/children" element={<ChildrenPage />} />
             <Route path="/input-aktivitas" element={<InputActivityPage />} />
+            <Route path="/jadwal" element={<SchedulesPage />} /> {/* <-- Route baru ditambahkan di sini */}
             <Route path="/ai-konsultasi" element={<AIConsultPage />} />
             <Route path="/pengingat" element={<RemindersPage />} />
             <Route path="/log-aktivitas" element={<ActivityLogsPage />} />

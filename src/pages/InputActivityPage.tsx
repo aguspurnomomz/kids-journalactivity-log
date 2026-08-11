@@ -3,8 +3,17 @@ import { useOutletContext, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ActivityForm } from '../components/ActivityForm';
 import { type Child, type ActivityLog } from '../types/database';
-import { Plus, Baby, Sparkles, Calendar, ArrowRight, X, Images } from 'lucide-react';
+import { Plus, Baby, Sparkles, Calendar, ArrowRight, X, Images, CalendarCheck, Clock } from 'lucide-react';
 import { ChildModal } from '../components/ChildModal';
+
+interface ScheduleItem {
+  id: string;
+  child_id: string;
+  day_of_week: string;
+  time_slot: string;
+  category: string;
+  activity_title: string;
+}
 
 export const InputActivityPage = () => {
   const { session } = useOutletContext<{ session: any }>();
@@ -13,6 +22,12 @@ export const InputActivityPage = () => {
   const [children, setChildren] = useState<Child[]>([]);
   const [selectedChildId, setSelectedChildId] = useState<string>('');
   const [logs, setLogs] = useState<ActivityLog[]>([]);
+  const [todaysSchedules, setTodaysSchedules] = useState<ScheduleItem[]>([]);
+  
+  // State untuk pre-fill form jika user klik dari jadwal
+  const [prefilledCategory, setPrefilledCategory] = useState<string>('');
+  const [prefilledName, setPrefilledName] = useState<string>('');
+
   const [loading, setLoading] = useState(true);
   const [isAddChildModalOpen, setIsAddChildModalOpen] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
@@ -37,15 +52,31 @@ export const InputActivityPage = () => {
     setLoading(false);
   };
 
-  const fetchLogs = async (childId: string) => {
+  const fetchLogsAndSchedules = async (childId: string) => {
     if (!childId) return;
-    const { data } = await supabase
+
+    // Ambil riwayat log aktivitas
+    const { data: logsData } = await supabase
       .from('activity_logs')
       .select('*')
       .eq('child_id', childId)
       .order('logged_at', { ascending: false });
 
-    setLogs(data || []);
+    setLogs(logsData || []);
+
+    // Tentukan nama hari ini dalam bahasa Indonesia
+    const daysName = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const currentDayName = daysName[new Date().getDay()];
+
+    // Ambil jadwal rutin untuk anak ini di hari ini
+    const { data: scheduleData } = await supabase
+      .from('activity_schedules')
+      .select('*')
+      .eq('child_id', childId)
+      .eq('day_of_week', currentDayName)
+      .order('time_slot', { ascending: true });
+
+    setTodaysSchedules(scheduleData || []);
   };
 
   useEffect(() => {
@@ -54,14 +85,24 @@ export const InputActivityPage = () => {
 
   useEffect(() => {
     if (selectedChildId) {
-      fetchLogs(selectedChildId);
+      fetchLogsAndSchedules(selectedChildId);
     }
   }, [selectedChildId]);
 
   const handleSaved = () => {
     if (selectedChildId) {
-      fetchLogs(selectedChildId); 
+      fetchLogsAndSchedules(selectedChildId); 
+      // Reset prefill setelah disimpan
+      setPrefilledCategory('');
+      setPrefilledName('');
     }
+  };
+
+  // Handler saat orang tua klik "Mulai Sesi" dari daftar jadwal
+  const handleSelectScheduleToLog = (schedule: ScheduleItem) => {
+    setPrefilledCategory(schedule.category);
+    setPrefilledName(schedule.activity_title);
+    window.scrollTo({ top: 300, behavior: 'smooth' });
   };
 
   if (loading) {
@@ -70,7 +111,7 @@ export const InputActivityPage = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6">
-      {/* Banner tanpa gradien, warna solid toska ceria */}
+      {/* Banner */}
       <div className="bg-[#01acbf] text-white p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-white/10" />
         <Sparkles className="w-16 h-16 absolute right-32 top-2 text-white/10" />
@@ -119,10 +160,51 @@ export const InputActivityPage = () => {
             </div>
           </div>
 
-          {selectedChildId && (
-            <ActivityForm childId={selectedChildId} onSave={handleSaved} />
+          {/* WIDGET AGENDA JADWAL HARI INI */}
+          {todaysSchedules.length > 0 && (
+            <div className="bg-teal-50/60 p-5 rounded-3xl border border-teal-100 space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold text-[#01acbf] flex items-center gap-1.5">
+                  <CalendarCheck className="w-4 h-4" /> Agenda Jadwal Rutin Hari Ini
+                </h3>
+                <span className="text-[10px] font-semibold text-teal-700 bg-white px-2.5 py-0.5 rounded-full border border-teal-100">
+                  {todaysSchedules.length} Agenda
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {todaysSchedules.map((sch) => (
+                  <div key={sch.id} className="bg-white p-3.5 rounded-2xl border border-teal-100/80 flex items-center justify-between gap-3 shadow-2xs">
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#01acbf]">
+                        <Clock className="w-3 h-3" /> {sch.time_slot} WIB
+                      </div>
+                      <h4 className="font-bold text-slate-800 text-xs">{sch.activity_title}</h4>
+                      <p className="text-[10px] text-slate-400 truncate max-w-[200px]">{sch.category}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleSelectScheduleToLog(sch)}
+                      className="px-3 py-1.5 bg-[#01acbf] hover:bg-[#0198a8] text-white text-[11px] font-semibold rounded-xl transition shadow-xs shrink-0"
+                    >
+                      Mulai Sesi
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
 
+          {/* Form Input Aktivitas (bisa menerima prefill dari jadwal) */}
+          {selectedChildId && (
+            <ActivityForm 
+              childId={selectedChildId} 
+              onSave={handleSaved} 
+              initialCategory={prefilledCategory}
+              initialActivityName={prefilledName}
+            />
+          )}
+
+          {/* Riwayat Aktivitas */}
           <div className="space-y-3 pt-4 border-t border-slate-100">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
