@@ -18,7 +18,8 @@ interface Props {
   logs: ActivityLog[];
 }
 
-const COLORS = ['#6366f1', '#a855f7', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
+// Palet warna baru disesuaikan dengan logo (Toska, Oranye, Ungu ceria, Kuning, Hijau mint, Biru)
+const COLORS = ['#01acbf', '#f47946', '#9B5DE5', '#FFD166', '#10b981', '#3b82f6'];
 
 export const AnalyticsCharts = ({ logs }: Props) => {
   if (logs.length === 0) {
@@ -53,6 +54,7 @@ export const AnalyticsCharts = ({ logs }: Props) => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Grafik Garis: Tren Skor Fokus */}
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
           <div>
             <h4 className="font-bold text-slate-800 text-sm">Tren Skor Fokus Anak</h4>
@@ -76,9 +78,9 @@ export const AnalyticsCharts = ({ logs }: Props) => {
                   type="monotone"
                   dataKey="focus"
                   name="Skor Fokus"
-                  stroke="#6366f1"
+                  stroke="#01acbf"
                   strokeWidth={3}
-                  dot={{ r: 4, fill: '#6366f1' }}
+                  dot={{ r: 4, fill: '#01acbf' }}
                   activeDot={{ r: 6 }}
                 />
               </LineChart>
@@ -86,6 +88,7 @@ export const AnalyticsCharts = ({ logs }: Props) => {
           </div>
         </div>
 
+        {/* Grafik Lingkaran: Distribusi Kategori Latihan */}
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
           <div>
             <h4 className="font-bold text-slate-800 text-sm">Distribusi Kategori Latihan</h4>
@@ -131,6 +134,8 @@ export const AnalyticsCharts = ({ logs }: Props) => {
           </div>
         </div>
       </div>
+
+      {/* Grafik Batang: Durasi Latihan */}
       <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
         <div>
           <h4 className="font-bold text-slate-800 text-sm">Durasi Latihan (Menit)</h4>
@@ -150,7 +155,7 @@ export const AnalyticsCharts = ({ logs }: Props) => {
                   fontSize: '11px',
                 }}
               />
-              <Bar dataKey="duration" name="Durasi (Menit)" fill="#818cf8" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="duration" name="Durasi (Menit)" fill="#f47946" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

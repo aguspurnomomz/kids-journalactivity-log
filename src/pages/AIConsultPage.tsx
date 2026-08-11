@@ -85,16 +85,17 @@ export const AIConsultPage = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6">
-      <div className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white p-7 rounded-3xl shadow-lg shadow-indigo-200/50 relative overflow-hidden flex flex-col justify-between">
-        <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-indigo-400/30" />
+      {/* Banner tanpa gradien, warna solid toska ceria */}
+      <div className="bg-[#01acbf] text-white p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col justify-between">
+        <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-white/10" />
         <div className="relative z-10">
-          <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-indigo-100 backdrop-blur-md">
+          <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-white backdrop-blur-md">
             Agent AI
           </span>
           <h1 className="text-2xl font-bold mt-3 leading-snug">
             Konsultasi & Rangkuman Perkembangan Anak
           </h1>
-          <p className="text-xs text-indigo-100 mt-1 max-w-lg">
+          <p className="text-xs text-teal-50 mt-1 max-w-lg">
             Dapatkan analisis mingguan otomatis berdasarkan jurnal latihan serta konsultasi langsung seputar stimulasi motorik melalui AI.
           </p>
         </div>
@@ -110,7 +111,7 @@ export const AIConsultPage = () => {
                 onClick={() => setSelectedChild(child)}
                 className={`px-4 py-2 rounded-2xl text-xs font-semibold transition border ${
                   selectedChild?.id === child.id
-                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                    ? 'bg-[#01acbf] text-white border-[#01acbf] shadow-sm'
                     : 'bg-slate-50 text-slate-600 border-slate-200/60 hover:bg-slate-100'
                 }`}
               >
@@ -126,24 +127,24 @@ export const AIConsultPage = () => {
           <div>
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
-                <Activity className="w-4 h-4 text-indigo-600" /> Rangkuman Jurnal Otomatis
+                <Activity className="w-4 h-4 text-[#01acbf]" /> Rangkuman Jurnal Otomatis
               </h3>
               <button
                 onClick={handleGenerateSummary}
                 disabled={loadingSummary || !selectedChild}
-                className="flex items-center gap-1.5 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-3.5 py-2 rounded-2xl text-xs font-semibold transition disabled:opacity-50"
+                className="flex items-center gap-1.5 bg-teal-50 text-[#01acbf] hover:bg-teal-100 px-3.5 py-2 rounded-2xl text-xs font-semibold transition disabled:opacity-50"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${loadingSummary ? 'animate-spin' : ''}`} />
                 {loadingSummary ? 'Menganalisis...' : 'Analisis AI'}
               </button>
             </div>
 
-            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 min-h-[260px] max-h-[360px] overflow-y-auto text-xs text-slate-600 leading-relaxed space-y-2">
+            <div className="bg-[#FAF9F6] p-4 rounded-2xl border border-slate-100 min-h-[260px] max-h-[360px] overflow-y-auto text-xs text-slate-600 leading-relaxed space-y-2">
               {summary ? (
                 <div className="whitespace-pre-line">{summary}</div>
               ) : (
                 <div className="text-center py-16 text-slate-400 space-y-2">
-                  <Sparkles className="w-8 h-8 text-indigo-300 mx-auto animate-pulse" />
+                  <Sparkles className="w-8 h-8 text-teal-300 mx-auto animate-pulse" />
                   <p>Klik tombol <strong>"Analisis AI"</strong> di atas untuk membuat laporan mingguan berdasarkan catatan latihan {selectedChild?.name || 'anak'}.</p>
                 </div>
               )}
@@ -157,7 +158,7 @@ export const AIConsultPage = () => {
 
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs flex flex-col justify-between h-[450px]">
           <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
-            <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-xs">
+            <div className="w-8 h-8 rounded-xl bg-[#01acbf] text-white flex items-center justify-center font-bold shadow-xs">
               <Bot className="w-4 h-4" />
             </div>
             <div>
@@ -173,14 +174,14 @@ export const AIConsultPage = () => {
                 className={`flex gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {msg.role === 'ai' && (
-                  <div className="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 mt-1">
+                  <div className="w-6 h-6 rounded-lg bg-teal-50 text-[#01acbf] flex items-center justify-center shrink-0 mt-1">
                     <Bot className="w-3.5 h-3.5" />
                   </div>
                 )}
                 <div
                   className={`p-3 rounded-2xl text-xs max-w-[80%] leading-relaxed ${
                     msg.role === 'user'
-                      ? 'bg-indigo-600 text-white rounded-br-none'
+                      ? 'bg-[#01acbf] text-white rounded-br-none'
                       : 'bg-slate-100 text-slate-700 rounded-bl-none'
                   }`}
                 >
@@ -195,7 +196,7 @@ export const AIConsultPage = () => {
             ))}
             {loadingChat && (
               <div className="flex items-center gap-2 text-xs text-slate-400 italic">
-                <Bot className="w-4 h-4 animate-bounce text-indigo-600" /> AI sedang merespons...
+                <Bot className="w-4 h-4 animate-bounce text-[#01acbf]" /> AI sedang merespons...
               </div>
             )}
           </div>
@@ -206,12 +207,12 @@ export const AIConsultPage = () => {
               placeholder="Tulis pertanyaan konsultasi..."
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
-              className="w-full px-3.5 py-2.5 border border-slate-200/80 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="w-full px-3.5 py-2.5 border border-slate-200/80 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
             />
             <button
               type="submit"
               disabled={loadingChat}
-              className="p-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl transition disabled:opacity-50 shrink-0"
+              className="p-2.5 bg-[#01acbf] hover:bg-[#0198a8] text-white rounded-2xl transition disabled:opacity-50 shrink-0"
             >
               <Send className="w-4 h-4" />
             </button>

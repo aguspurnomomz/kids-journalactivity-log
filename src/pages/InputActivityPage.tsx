@@ -70,18 +70,19 @@ export const InputActivityPage = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6">
-      <div className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white p-7 rounded-3xl shadow-lg shadow-indigo-200/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-indigo-400/30" />
-        <Sparkles className="w-16 h-16 absolute right-32 top-2 text-indigo-300/20" />
+      {/* Banner tanpa gradien, warna solid toska ceria */}
+      <div className="bg-[#01acbf] text-white p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-white/10" />
+        <Sparkles className="w-16 h-16 absolute right-32 top-2 text-white/10" />
 
         <div className="relative z-10 max-w-md">
-          <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-indigo-100 backdrop-blur-md">
+          <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-white backdrop-blur-md">
             Input Aktivitas Harian
           </span>
           <h2 className="text-2xl font-bold mt-2 leading-snug">
             Jurnal Aktivitas Hari Ini
           </h2>
-          <p className="text-xs text-indigo-100 mt-1">
+          <p className="text-xs text-teal-50 mt-1">
             Pilih profil anak dan isi detail jurnal aktivitas harian secara teratur.
           </p>
         </div>
@@ -89,9 +90,9 @@ export const InputActivityPage = () => {
         {children.length > 0 && (
           <button
             onClick={() => setIsAddChildModalOpen(true)}
-            className="relative z-10 flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 rounded-full text-xs font-semibold transition shadow-md shrink-0"
+            className="relative z-10 flex items-center justify-center gap-2 bg-white text-[#01acbf] hover:bg-teal-50 px-5 py-3 rounded-full text-xs font-semibold transition shadow-md shrink-0"
           >
-            <Plus className="w-4 h-4 text-indigo-400" /> Tambah Data Anak
+            <Plus className="w-4 h-4" /> Tambah Data Anak
           </button>
         )}
       </div>
@@ -107,7 +108,7 @@ export const InputActivityPage = () => {
                   onClick={() => setSelectedChildId(child.id)}
                   className={`px-4 py-2.5 rounded-2xl text-xs font-semibold transition flex items-center gap-2 border shrink-0 ${
                     selectedChildId === child.id
-                      ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                      ? 'bg-[#01acbf] text-white border-[#01acbf] shadow-sm'
                       : 'bg-slate-50 text-slate-600 border-slate-200/60 hover:bg-slate-100'
                   }`}
                 >
@@ -125,11 +126,11 @@ export const InputActivityPage = () => {
           <div className="space-y-3 pt-4 border-t border-slate-100">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-indigo-600" /> Riwayat Aktivitas
+                <Calendar className="w-4 h-4 text-[#01acbf]" /> Riwayat Aktivitas
               </h3>
               <button
                 onClick={() => navigate('/log-aktivitas')}
-                className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1"
+                className="text-xs font-bold text-[#01acbf] hover:underline flex items-center gap-1"
               >
                 Lihat Semua Aktivitas <ArrowRight className="w-3.5 h-3.5" />
               </button>
@@ -142,7 +143,6 @@ export const InputActivityPage = () => {
             ) : (
               <div className="space-y-4">
                 {logs.map((log: any) => {
-                  // Ekstrak array foto dari image_urls (JSONB) atau fallback ke image_url/photo_url lama
                   const photos: string[] = 
                     Array.isArray(log.image_urls) && log.image_urls.length > 0
                       ? log.image_urls
@@ -153,11 +153,11 @@ export const InputActivityPage = () => {
                   return (
                     <div
                       key={log.id}
-                      className="bg-white p-5 rounded-3xl border border-slate-100 hover:border-indigo-100 transition shadow-xs space-y-3"
+                      className="bg-white p-5 rounded-3xl border border-slate-100 hover:border-teal-100 transition shadow-xs space-y-3"
                     >
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-50 pb-3">
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-bold bg-indigo-50 text-indigo-600 px-2.5 py-0.5 rounded-full">
+                          <span className="text-[10px] font-bold bg-teal-50 text-[#01acbf] px-2.5 py-0.5 rounded-full">
                             {log.activity_category}
                           </span>
                           <span className="text-[11px] text-slate-400">
@@ -170,14 +170,14 @@ export const InputActivityPage = () => {
                           <span className="text-slate-200">•</span>
                           <div>Bantuan: <strong className="text-slate-700">{log.assistance_level}</strong></div>
                           <span className="text-slate-200">•</span>
-                          <div>Fokus: <strong className="text-indigo-600 font-bold">{log.focus_score}/5</strong></div>
+                          <div>Fokus: <strong className="text-[#01acbf] font-bold">{log.focus_score}/5</strong></div>
                         </div>
                       </div>
 
                       <div>
                         <h4 className="font-bold text-slate-800 text-sm">{log.activity_name}</h4>
                         {log.notes && (
-                          <p className="text-xs text-slate-600 bg-slate-50/70 p-3 rounded-2xl border border-slate-100/60 mt-2">
+                          <p className="text-xs text-slate-600 bg-[#FAF9F6] p-3 rounded-2xl border border-slate-100/60 mt-2">
                             {log.notes}
                           </p>
                         )}
@@ -186,7 +186,7 @@ export const InputActivityPage = () => {
                       {photos.length > 0 && (
                         <div className="pt-2">
                           <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 mb-2">
-                            <Images className="w-3.5 h-3.5 text-indigo-600" /> Foto Dokumentasi ({photos.length})
+                            <Images className="w-3.5 h-3.5 text-[#01acbf]" /> Foto Dokumentasi ({photos.length})
                           </div>
                           <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-thin">
                             {photos.map((photoUrl, idx) => (
@@ -214,7 +214,7 @@ export const InputActivityPage = () => {
         </div>
       ) : (
         <div className="text-center py-12 bg-white rounded-3xl border border-dashed border-slate-200 space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto">
+          <div className="w-12 h-12 rounded-2xl bg-teal-50 text-[#01acbf] flex items-center justify-center mx-auto">
             <Baby className="w-6 h-6" />
           </div>
           <p className="text-xs text-slate-400 max-w-xs mx-auto">
@@ -222,7 +222,7 @@ export const InputActivityPage = () => {
           </p>
           <button
             onClick={() => setIsAddChildModalOpen(true)}
-            className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs px-5 py-2.5 rounded-2xl transition shadow-md shadow-indigo-100"
+            className="inline-flex items-center gap-2 bg-[#01acbf] hover:bg-[#0198a8] text-white font-semibold text-xs px-5 py-2.5 rounded-2xl transition shadow-md shadow-teal-100"
           >
             <Plus className="w-4 h-4" /> Tambah Data Anak
           </button>

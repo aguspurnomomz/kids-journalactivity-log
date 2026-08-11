@@ -183,10 +183,10 @@ export const ActivityLogsPage = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6">
-      {/* Header Banner */}
-      <div className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white p-7 rounded-3xl shadow-lg shadow-indigo-200/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-indigo-400/30" />
-        <Sparkles className="w-16 h-16 absolute right-32 top-2 text-indigo-300/20" />
+      {/* Banner tanpa gradien, warna solid toska ceria */}
+      <div className="bg-[#01acbf] text-white p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-white/10" />
+        <Sparkles className="w-16 h-16 absolute right-32 top-2 text-white/10" />
 
         <div className="relative z-10 max-w-md">
           <button
@@ -196,7 +196,7 @@ export const ActivityLogsPage = () => {
             <ArrowLeft className="w-3.5 h-3.5" /> Kembali
           </button>
           <h2 className="text-2xl font-bold leading-snug">Riwayat Semua Aktivitas</h2>
-          <p className="text-xs text-indigo-100 mt-1">
+          <p className="text-xs text-teal-50 mt-1">
             Filter dan pantau seluruh aktivitas harian anak anda.
           </p>
         </div>
@@ -214,7 +214,7 @@ export const ActivityLogsPage = () => {
                     onClick={() => setSelectedChildId(child.id)}
                     className={`px-4 py-2 rounded-2xl text-xs font-semibold transition flex items-center gap-2 border shrink-0 ${
                       selectedChildId === child.id
-                        ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
+                        ? 'bg-[#01acbf] text-white border-[#01acbf] shadow-xs'
                         : 'bg-slate-50 text-slate-600 border-slate-200/60 hover:bg-slate-100'
                     }`}
                   >
@@ -228,12 +228,12 @@ export const ActivityLogsPage = () => {
             <div className="pt-4 border-t border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
               <div>
                 <label className="block text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
-                  <Filter className="w-3.5 h-3.5 text-indigo-600" /> Kategori Kegiatan
+                  <Filter className="w-3.5 h-3.5 text-[#01acbf]" /> Kategori Kegiatan
                 </label>
                 <select
                   value={filterCategory}
                   onChange={(e) => setFilterCategory(e.target.value)}
-                  className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none"
+                  className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
                 >
                   <option value="all">Semua Kategori</option>
                   <option value="Motorik Halus (Menulis, Mencepit, Memotong)">Motorik Halus</option>
@@ -245,26 +245,26 @@ export const ActivityLogsPage = () => {
 
               <div>
                 <label className="block text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5 text-indigo-600" /> Dari Tanggal
+                  <Calendar className="w-3.5 h-3.5 text-[#01acbf]" /> Dari Tanggal
                 </label>
                 <input
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none"
+                  className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
                 />
               </div>
 
               <div className="flex gap-2">
                 <div className="flex-1">
                   <label className="block text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5 text-indigo-600" /> Sampai Tanggal
+                    <Calendar className="w-3.5 h-3.5 text-[#01acbf]" /> Sampai Tanggal
                   </label>
                   <input
                     type="date"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none"
+                    className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
                   />
                 </div>
 
@@ -308,12 +308,12 @@ export const ActivityLogsPage = () => {
                   return (
                     <div
                       key={log.id}
-                      className="bg-white p-5 rounded-3xl border border-slate-100 hover:border-indigo-100 transition shadow-xs space-y-3"
+                      className="bg-white p-5 rounded-3xl border border-slate-100 hover:border-teal-100 transition shadow-xs space-y-3"
                     >
                       {/* HEADER CARD */}
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-50 pb-3">
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-bold bg-indigo-50 text-indigo-600 px-2.5 py-0.5 rounded-full">
+                          <span className="text-[10px] font-bold bg-teal-50 text-[#01acbf] px-2.5 py-0.5 rounded-full">
                             {log.activity_category}
                           </span>
                           <span className="text-[11px] text-slate-400">
@@ -328,10 +328,10 @@ export const ActivityLogsPage = () => {
                               <span className="text-slate-200">•</span>
                               <div>Bantuan: <strong className="text-slate-700">{log.assistance_level}</strong></div>
                               <span className="text-slate-200">•</span>
-                              <div>Fokus: <strong className="text-indigo-600 font-bold">{log.focus_score}/5</strong></div>
+                              <div>Fokus: <strong className="text-[#01acbf] font-bold">{log.focus_score}/5</strong></div>
                               <button
                                 onClick={() => handleStartEdit(log)}
-                                className="ml-2 px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-semibold rounded-xl transition flex items-center gap-1 text-[11px]"
+                                className="ml-2 px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-[#01acbf] font-semibold rounded-xl transition flex items-center gap-1 text-[11px]"
                               >
                                 <Edit3 className="w-3.5 h-3.5" /> Edit
                               </button>
@@ -347,8 +347,8 @@ export const ActivityLogsPage = () => {
 
                       {/* JIKA DALAM MODE EDIT */}
                       {isEditing ? (
-                        <div className="bg-slate-50/80 p-4 rounded-2xl border border-indigo-100 space-y-4 mt-2">
-                          <h5 className="text-xs font-bold text-indigo-600 flex items-center gap-1.5">
+                        <div className="bg-[#FAF9F6] p-4 rounded-2xl border border-teal-100 space-y-4 mt-2">
+                          <h5 className="text-xs font-bold text-[#01acbf] flex items-center gap-1.5">
                             <Edit3 className="w-3.5 h-3.5" /> Edit Catatan & Detail Latihan
                           </h5>
 
@@ -360,7 +360,7 @@ export const ActivityLogsPage = () => {
                                 min="1"
                                 value={editDuration}
                                 onChange={(e) => setEditDuration(Number(e.target.value))}
-                                className="w-full p-2 border border-slate-200 rounded-xl text-xs bg-white focus:outline-none"
+                                className="w-full p-2 border border-slate-200 rounded-xl text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
                               />
                             </div>
                             <div>
@@ -383,7 +383,7 @@ export const ActivityLogsPage = () => {
                                 max="5"
                                 value={editFocusScore}
                                 onChange={(e) => setEditFocusScore(Number(e.target.value))}
-                                className="w-full p-2 border border-slate-200 rounded-xl text-xs bg-white focus:outline-none"
+                                className="w-full p-2 border border-slate-200 rounded-xl text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
                               />
                             </div>
                           </div>
@@ -395,7 +395,7 @@ export const ActivityLogsPage = () => {
                               value={editNotes}
                               onChange={(e) => setEditNotes(e.target.value)}
                               placeholder="Tulis catatan di sini..."
-                              className="w-full p-2.5 border border-slate-200 rounded-xl text-xs bg-white focus:outline-none"
+                              className="w-full p-2.5 border border-slate-200 rounded-xl text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
                             />
                           </div>
 
@@ -425,7 +425,7 @@ export const ActivityLogsPage = () => {
                               ))}
 
                               {editPhotos.length < 5 && (
-                                <label className="w-16 h-16 rounded-xl border-2 border-dashed border-indigo-200 hover:bg-indigo-50/50 flex flex-col items-center justify-center text-indigo-600 cursor-pointer transition">
+                                <label className="w-16 h-16 rounded-xl border-2 border-dashed border-teal-200 hover:bg-teal-50/50 flex flex-col items-center justify-center text-[#01acbf] cursor-pointer transition">
                                   {uploadingPhoto ? (
                                     <Loader2 className="w-4 h-4 animate-spin" />
                                   ) : (
@@ -448,7 +448,7 @@ export const ActivityLogsPage = () => {
                           </div>
 
                           {/* TOMBOL AKSI EDIT */}
-                          <div className="flex items-center justify-end gap-2 pt-2 border-t border-indigo-100">
+                          <div className="flex items-center justify-end gap-2 pt-2 border-t border-teal-100">
                             <button
                               type="button"
                               onClick={() => setEditingLogId(null)}
@@ -460,7 +460,7 @@ export const ActivityLogsPage = () => {
                               type="button"
                               disabled={savingEdit || uploadingPhoto}
                               onClick={() => handleSaveEdit(log.id)}
-                              className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs transition shadow-sm flex items-center gap-1.5 disabled:opacity-50"
+                              className="px-4 py-1.5 bg-[#01acbf] hover:bg-[#0198a8] text-white font-semibold rounded-xl text-xs transition shadow-sm flex items-center gap-1.5 disabled:opacity-50"
                             >
                               {savingEdit ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                               {savingEdit ? 'Menyimpan...' : 'Simpan Perubahan'}
@@ -471,7 +471,7 @@ export const ActivityLogsPage = () => {
                         <>
                           {/* TAMPILAN NORMAL (BUKAN EDIT) */}
                           {log.notes && (
-                            <p className="text-xs text-slate-600 bg-slate-50/70 p-3 rounded-2xl border border-slate-100/60 mt-2">
+                            <p className="text-xs text-slate-600 bg-[#FAF9F6] p-3 rounded-2xl border border-slate-100/60 mt-2">
                               {log.notes}
                             </p>
                           )}
@@ -479,7 +479,7 @@ export const ActivityLogsPage = () => {
                           {photos.length > 0 && (
                             <div className="pt-2">
                               <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 mb-2">
-                                <Images className="w-3.5 h-3.5 text-indigo-600" /> Foto Dokumentasi ({photos.length})
+                                <Images className="w-3.5 h-3.5 text-[#01acbf]" /> Foto Dokumentasi ({photos.length})
                               </div>
                               <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-thin">
                                 {photos.map((photoUrl, idx) => (

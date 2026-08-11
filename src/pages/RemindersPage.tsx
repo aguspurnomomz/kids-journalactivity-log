@@ -88,7 +88,7 @@ export const RemindersPage = () => {
       if (reminderError) throw reminderError;
 
       const childObj = children.find((c) => c.id === selectedChildId);
-      const messageContent = `*PENGINGAT LATIHAN MOTORIK* 🔔\n\nHalo Ayah/Bunda! Saatnya dampingi *${childObj?.name || 'Anak'}* untuk latihan motorik.\n\n📌 *Agenda:* ${title.trim()}\n⏰ *Jadwal:* ${new Date(scheduledTime).toLocaleString('id-ID')}\n\nMari catat perkembangannya di aplikasi! 💪🏼✨`;
+      const messageContent = `*PENGINGAT LATIHAN MOTORIK* 🚀\n\nHalo Ayah/Bunda! Saatnya dampingi *${childObj?.name || 'Anak'}* untuk latihan motorik.\n\n📌 *Agenda:* ${title.trim()}\n⏰ *Jadwal:* ${new Date(scheduledTime).toLocaleString('id-ID')}\n\nMari catat perkembangannya di aplikasi! ✨👶📝`;
 
       const { error: taskError } = await supabase.from('scheduled_reminder_tasks').insert({
         reminder_id: reminderData.id,
@@ -132,18 +132,19 @@ export const RemindersPage = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6">
-      <div className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white p-7 rounded-3xl shadow-lg shadow-indigo-200/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-indigo-400/30" />
-        <Sparkles className="w-16 h-16 absolute right-32 top-2 text-indigo-300/20" />
+      {/* Banner tanpa gradien, warna solid toska ceria */}
+      <div className="bg-[#01acbf] text-white p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-white/10" />
+        <Sparkles className="w-16 h-16 absolute right-32 top-2 text-white/10" />
 
         <div className="relative z-10 max-w-md">
-          <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-indigo-100 backdrop-blur-md">
+          <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-white backdrop-blur-md">
             Pengingat Aktivitas Harian
           </span>
           <h2 className="text-2xl font-bold mt-2 leading-snug">
             Jadwalkan Aktivitas Hari Ini 
           </h2>
-          <p className="text-xs text-indigo-100 mt-1">
+          <p className="text-xs text-teal-50 mt-1">
             Atur jadwal pengingat otomatis yang akan dikirim langsung ke WhatsApp Ayah/Bunda.
           </p>
         </div>
@@ -158,7 +159,7 @@ export const RemindersPage = () => {
             <select
               value={selectedChildId}
               onChange={(e) => setSelectedChildId(e.target.value)}
-              className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none"
+              className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
             >
               {children.map((c) => (
                 <option key={c.id} value={c.id}>{c.name}</option>
@@ -174,7 +175,7 @@ export const RemindersPage = () => {
               placeholder="e.g. Latihan Mencepit Pinset & Lempar Bola"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs focus:outline-none"
+              className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
             />
           </div>
         </div>
@@ -182,7 +183,7 @@ export const RemindersPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5" /> Waktu Pelaksanaan
+              <Clock className="w-3.5 h-3.5 text-[#01acbf]" /> Waktu Pelaksanaan
             </label>
             <input
               type="datetime-local"
@@ -195,7 +196,7 @@ export const RemindersPage = () => {
 
           <div>
             <label className="block text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
-              <Phone className="w-3.5 h-3.5" /> Nomor WhatsApp Tujuan
+              <Phone className="w-3.5 h-3.5 text-[#01acbf]" /> Nomor WhatsApp Tujuan
             </label>
             <input
               type="tel"
@@ -203,7 +204,7 @@ export const RemindersPage = () => {
               placeholder="e.g. 081234567890"
               value={whatsappNumber}
               onChange={(e) => setWhatsappNumber(e.target.value)}
-              className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs focus:outline-none"
+              className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
             />
           </div>
         </div>
@@ -211,7 +212,7 @@ export const RemindersPage = () => {
         <button
           type="submit"
           disabled={isSaving}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-2xl text-xs transition shadow-md shadow-indigo-100 flex items-center gap-2 disabled:opacity-50"
+          className="bg-[#01acbf] hover:bg-[#0198a8] text-white font-semibold px-5 py-2.5 rounded-2xl text-xs transition shadow-md shadow-teal-100 flex items-center gap-2 disabled:opacity-50"
         >
           {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
           {isSaving ? 'Memproses...' : 'Simpan Jadwal Pengingat'}

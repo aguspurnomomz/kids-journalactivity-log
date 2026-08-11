@@ -194,7 +194,7 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
       <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-        <Activity className="w-4 h-4 text-indigo-600" /> Catat Aktivitas Hari Ini
+        <Activity className="w-4 h-4 text-[#01acbf]" /> Catat Aktivitas Hari Ini
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -205,7 +205,7 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
               <button
                 type="button"
                 onClick={() => setIsAddingNewCategory(true)}
-                className="text-[11px] font-bold text-indigo-600 hover:underline flex items-center gap-1"
+                className="text-[11px] font-bold text-[#01acbf] hover:underline flex items-center gap-1"
               >
                 <Plus className="w-3 h-3" /> Tambah Kategori
               </button>
@@ -216,7 +216,7 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
             >
               {categories.map((cat, idx) => (
                 <option key={idx} value={cat}>
@@ -237,7 +237,7 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
                 type="button"
                 onClick={handleSaveCategoryToDB}
                 disabled={savingCategory}
-                className="p-2.5 bg-indigo-600 text-white rounded-2xl shrink-0"
+                className="p-2.5 bg-[#01acbf] text-white rounded-2xl shrink-0"
               >
                 <Check className="w-4 h-4" />
               </button>
@@ -260,7 +260,7 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
             placeholder="e.g. Mencepit manik-manik dengan pinset"
             value={activityName}
             onChange={(e) => setActivityName(e.target.value)}
-            className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+            className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
           />
         </div>
       </div>
@@ -268,7 +268,7 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label className="block text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
-            <Clock className="w-3.5 h-3.5" /> Durasi (Menit)
+            <Clock className="w-3.5 h-3.5 text-[#01acbf]" /> Durasi (Menit)
           </label>
           <input
             type="number"
@@ -280,7 +280,7 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
 
         <div>
           <label className="block text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
-            <Award className="w-3.5 h-3.5" /> Tingkat Bantuan
+            <Award className="w-3.5 h-3.5 text-[#f47946]" /> Tingkat Bantuan
           </label>
           <select
             value={assistance}
@@ -303,9 +303,9 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
             max="5"
             value={focusScore}
             onChange={(e) => setFocusScore(Number(e.target.value))}
-            className="w-full mt-2 accent-indigo-600"
+            className="w-full mt-2 accent-[#01acbf]"
           />
-          <div className="text-right text-xs text-indigo-600 font-bold">{focusScore} / 5</div>
+          <div className="text-right text-xs text-[#01acbf] font-bold">{focusScore} / 5</div>
         </div>
       </div>
 
@@ -323,7 +323,7 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
       <div>
         <div className="flex items-center justify-between mb-2">
           <label className="block text-[11px] font-bold text-slate-500 flex items-center gap-1">
-            <ImageIcon className="w-3.5 h-3.5 text-indigo-600" /> Foto Kegiatan (Maks. 5 Foto)
+            <ImageIcon className="w-3.5 h-3.5 text-[#01acbf]" /> Foto Kegiatan (Maks. 5 Foto)
           </label>
           <span className="text-[10px] font-semibold text-slate-400">
             {imageItems.length} / 5 Terpilih
@@ -353,7 +353,7 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
               type="button"
               onClick={handleTriggerCamera}
               disabled={imageItems.length >= 5}
-              className="flex-1 flex items-center justify-center gap-2 p-3 border border-indigo-200 bg-indigo-50/50 hover:bg-indigo-100/60 text-indigo-700 rounded-2xl transition font-semibold text-xs shadow-2xs disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 flex items-center justify-center gap-2 p-3 border border-teal-200 bg-teal-50/50 hover:bg-teal-100/60 text-[#01acbf] rounded-2xl transition font-semibold text-xs shadow-2xs disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Camera className="w-4 h-4" /> Ambil Kamera
             </button>
@@ -394,7 +394,7 @@ export const ActivityForm = ({ childId, onSave }: { childId: string; onSave: () 
       <button
         type="submit"
         disabled={loading}
-        className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-2xl text-xs transition shadow-md shadow-indigo-100 disabled:opacity-50 flex items-center gap-2"
+        className="bg-[#01acbf] hover:bg-[#0198a8] text-white font-semibold px-5 py-2.5 rounded-2xl text-xs transition shadow-md shadow-teal-100 disabled:opacity-50 flex items-center gap-2"
       >
         {loading && <Loader2 className="w-4 h-4 animate-spin" />}
         {loading ? 'Menyimpan & Mengunggah Foto...' : 'Simpan Aktivitas'}

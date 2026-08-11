@@ -19,13 +19,13 @@ export const MainLayout = () => {
   const navItems = [
     { to: '/', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/children', label: 'Data Anak', icon: Users },
-    { to: '/input-aktivitas', label: 'Input', icon: PlusCircle },
+    { to: '/input-aktivitas', label: 'Catat Aktivitas', icon: PlusCircle },
     { to: '/ai-konsultasi', label: 'AI Konsul', icon: Sparkles },
     { to: '/pengingat', label: 'Pengingat', icon: Bell } 
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col md:flex-row text-slate-800 font-sans pb-20 md:pb-0">
+    <div className="min-h-screen bg-[#FAF9F6] flex flex-col md:flex-row text-slate-800 font-sans pb-20 md:pb-0">
       
       {/* 1. MOBILE NAVBAR HEADER ATAS */}
       <div className="md:hidden bg-white border-b border-slate-100 p-4 flex items-center justify-between sticky top-0 z-30 shadow-xs">
@@ -60,7 +60,7 @@ export const MainLayout = () => {
                     className={({ isActive }) =>
                       `w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold transition ${
                         isActive
-                          ? 'bg-indigo-50 text-indigo-600 font-bold'
+                          ? 'bg-teal-50 text-[#01acbf] font-bold'
                           : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
                       }`
                     }
@@ -75,9 +75,9 @@ export const MainLayout = () => {
         </div>
 
         <div className="p-4 border-t border-slate-100">
-          <div className="flex items-center justify-between p-2 rounded-2xl bg-slate-50">
+          <div className="flex items-center justify-between p-2 rounded-2xl bg-[#FAF9F6]">
             <div className="flex items-center gap-2.5 overflow-hidden">
-              <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs shrink-0">
+              <div className="w-8 h-8 rounded-full bg-teal-50 text-[#01acbf] flex items-center justify-center font-bold text-xs shrink-0">
                 {session?.user?.email?.charAt(0).toUpperCase()}
               </div>
               <div className="truncate">
@@ -107,7 +107,7 @@ export const MainLayout = () => {
               className={({ isActive }) =>
                 `flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl transition ${
                   isActive
-                    ? 'text-indigo-600 font-bold'
+                    ? 'text-[#01acbf] font-bold'
                     : 'text-slate-400 hover:text-slate-600'
                 }`
               }
@@ -121,13 +121,13 @@ export const MainLayout = () => {
 
       {/* 4. KONTEN UTAMA */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="hidden md:flex items-center justify-between px-8 py-5 bg-[#f8fafc]">
+        <header className="hidden md:flex items-center justify-between px-8 py-5 bg-[#FAF9F6]">
           <div className="relative w-96">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               placeholder="Cari aktivitas atau catatan latihan..."
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200/60 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-xs"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200/60 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20 shadow-xs"
             />
           </div>
 
