@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useOutletContext, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { LayoutDashboard, Users, LogOut, Sparkles, Search, Bell, Mail, PlusCircle } from 'lucide-react';
+import { LayoutDashboard, Users, LogOut, Sparkles, Bell, Mail, PlusCircle } from 'lucide-react';
 import { CalendarDays } from 'lucide-react';
 import logoImage from '../assets/logo.png';
 
@@ -51,7 +51,7 @@ export const MainLayout = () => {
           </div>
 
           <div className="px-4 py-2">
-            <p className="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-2">Overview</p>
+            <p className="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase mb-2">Menu Utama</p>
             <nav className="space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -124,14 +124,14 @@ export const MainLayout = () => {
       {/* 4. KONTEN UTAMA */}
       <div className="flex-1 flex flex-col min-w-0">
         <header className="hidden md:flex items-center justify-between px-8 py-5 bg-[#FAF9F6]">
-          <div className="relative w-96">
+          {/* <div className="relative w-96">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               placeholder="Cari aktivitas atau catatan latihan..."
               className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200/60 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20 shadow-xs"
             />
-          </div>
+          </div> */}
 
           <div className="flex items-center gap-3">
             <button className="w-9 h-9 rounded-full bg-white border border-slate-200/60 flex items-center justify-center text-slate-500 hover:bg-slate-50 transition">

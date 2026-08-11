@@ -23,7 +23,7 @@ export default function App() {
             <Route path="/" element={<DashboardPage />} />
             <Route path="/children" element={<ChildrenPage />} />
             <Route path="/input-aktivitas" element={<InputActivityPage />} />
-            <Route path="/jadwal" element={<SchedulesPage />} /> {/* <-- Route baru ditambahkan di sini */}
+            <Route path="/jadwal" element={<SchedulesPage />} /> 
             <Route path="/ai-konsultasi" element={<AIConsultPage />} />
             <Route path="/pengingat" element={<RemindersPage />} />
             <Route path="/log-aktivitas" element={<ActivityLogsPage />} />
