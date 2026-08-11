@@ -21,7 +21,7 @@ export const MainLayout = () => {
     { to: '/', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/children', label: 'Data Anak', icon: Users },
     { to: '/input-aktivitas', label: 'Aktivitas Hari Ini', icon: PlusCircle },
-    { to: '/jadwal', label: 'Jadwal', icon: CalendarDays },
+    { to: '/jadwal', label: 'Agenda', icon: CalendarDays },
     { to: '/ai-konsultasi', label: 'AI Konsul', icon: Sparkles }
     // { to: '/pengingat', label: 'Pengingat', icon: Bell } 
   ];

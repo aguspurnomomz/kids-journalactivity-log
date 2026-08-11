@@ -157,10 +157,10 @@ export const SchedulesPage = () => {
         <Sparkles className="w-24 h-24 sm:w-32 sm:h-32 absolute -right-6 -bottom-6 text-white/10" />
         <div className="relative z-10 max-w-md">
           <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-white backdrop-blur-md">
-            Kurikulum & Rutinitas
+            Agenda Kegiatan
           </span>
           <h1 className="text-lg sm:text-2xl font-bold mt-2 leading-snug">
-            Jadwal Kegiatan Kalender
+            Buat agenda kegiatan berdasarkan kalender 
           </h1>
           <p className="text-xs text-teal-50 mt-1">
             Klik tanggal beragenda untuk memilih dan memulai sesi latihan sesuai waktunya.

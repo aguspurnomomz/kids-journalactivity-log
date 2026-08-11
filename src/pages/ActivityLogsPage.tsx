@@ -19,11 +19,11 @@ export const ActivityLogsPage = () => {
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
 
-  // Edit Modal / State
+  // Edit Modal / State (Diubah ke string agar saat dihapus tidak meninggalkan angka 0)
   const [editingLogId, setEditingLogId] = useState<string | null>(null);
-  const [editDuration, setEditDuration] = useState<number>(15);
+  const [editDuration, setEditDuration] = useState<string>('15');
   const [editAssistance, setEditAssistance] = useState<string>('');
-  const [editFocusScore, setEditFocusScore] = useState<number>(4);
+  const [editFocusScore, setEditFocusScore] = useState<string>('4');
   const [editNotes, setEditNotes] = useState<string>('');
   const [editPhotos, setEditPhotos] = useState<string[]>([]); // URL foto yang ada
   const [uploadingPhoto, setUploadingPhoto] = useState<boolean>(false);
@@ -87,9 +87,9 @@ export const ActivityLogsPage = () => {
   // Handler Buka Form Edit
   const handleStartEdit = (log: any) => {
     setEditingLogId(log.id);
-    setEditDuration(log.duration_minutes || 15);
+    setEditDuration(log.duration_minutes ? String(log.duration_minutes) : '15');
     setEditAssistance(log.assistance_level || 'Partial Support');
-    setEditFocusScore(log.focus_score || 4);
+    setEditFocusScore(log.focus_score ? String(log.focus_score) : '4');
     setEditNotes(log.notes || '');
     
     const existingPhotos = 
@@ -149,7 +149,7 @@ export const ActivityLogsPage = () => {
     setEditPhotos((prev) => prev.filter((_, idx) => idx !== indexToRemove));
   };
 
-  // Simpan Perubahan Edit ke Database
+  // Simpan Perubahan Edit ke Database (Konversi kembali ke angka saat dikirim)
   const handleSaveEdit = async (logId: string) => {
     setSavingEdit(true);
 
@@ -157,9 +157,9 @@ export const ActivityLogsPage = () => {
       const { error } = await supabase
         .from('activity_logs')
         .update({
-          duration_minutes: Number(editDuration),
+          duration_minutes: editDuration ? Number(editDuration) : 0,
           assistance_level: editAssistance,
-          focus_score: Number(editFocusScore),
+          focus_score: editFocusScore ? Number(editFocusScore) : 1,
           notes: editNotes.trim(),
           image_urls: editPhotos,
           image_url: editPhotos[0] || null,
@@ -358,8 +358,9 @@ export const ActivityLogsPage = () => {
                               <input
                                 type="number"
                                 min="1"
+                                placeholder="e.g. 15"
                                 value={editDuration}
-                                onChange={(e) => setEditDuration(Number(e.target.value))}
+                                onChange={(e) => setEditDuration(e.target.value)}
                                 className="w-full p-2 border border-slate-200 rounded-xl text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
                               />
                             </div>
@@ -381,8 +382,9 @@ export const ActivityLogsPage = () => {
                                 type="number"
                                 min="1"
                                 max="5"
+                                placeholder="e.g. 4"
                                 value={editFocusScore}
-                                onChange={(e) => setEditFocusScore(Number(e.target.value))}
+                                onChange={(e) => setEditFocusScore(e.target.value)}
                                 className="w-full p-2 border border-slate-200 rounded-xl text-xs bg-white focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20"
                               />
                             </div>
