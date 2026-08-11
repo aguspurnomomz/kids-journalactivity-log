@@ -64,27 +64,19 @@ export const DashboardPage = () => {
   return (
     <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
       <div className="order-1 lg:col-span-2">
-        <div className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white p-6 sm:p-7 rounded-3xl shadow-lg shadow-indigo-200/50 relative overflow-hidden flex flex-col justify-between min-h-[180px]">
-          <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-indigo-400/30" />
-          <Sparkles className="w-16 h-16 absolute right-32 top-2 text-indigo-300/20" />
+        {/* Banner tanpa gradien, warna solid bernuansa toska ceria */}
+        <div className="bg-[#01acbf] text-white p-6 sm:p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col justify-between min-h-[180px]">
+          <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-white/10" />
+          <Sparkles className="w-16 h-16 absolute right-32 top-2 text-white/10" />
 
           <div className="relative z-10 max-w-md">
-            <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-indigo-100 backdrop-blur-md">
+            <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-white backdrop-blur-md">
               Jurnal Latihan Harian
             </span>
             <h1 className="text-xl sm:text-2xl font-bold mt-3 leading-snug">
               Pantau & Optimalkan Perkembangan Motorik Buah Hati
             </h1>
           </div>
-
-          {/* <div className="relative z-10 mt-5 flex items-center gap-3">
-            <button
-              onClick={() => navigate('/input-aktivitas')}
-              className="bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs px-5 py-3 rounded-full transition shadow-md flex items-center gap-2"
-            >
-              <PlusCircle className="w-4 h-4 text-indigo-400" /> Input Aktivitas Baru
-            </button>
-          </div> */}
         </div>
       </div>
 
@@ -92,12 +84,6 @@ export const DashboardPage = () => {
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-slate-800 text-base">Profil Anak</h3>
-            {/* <button
-              onClick={() => setIsAddChildModalOpen(true)}
-              className="text-xs font-bold text-indigo-600 hover:underline"
-            >
-              + Tambah
-            </button> */}
           </div>
 
           {children.length > 0 ? (
@@ -110,7 +96,7 @@ export const DashboardPage = () => {
                       onClick={() => setActiveChild(child)}
                       className={`px-3 py-1 rounded-full text-xs font-semibold transition shrink-0 ${
                         activeChild?.id === child.id
-                          ? 'bg-indigo-600 text-white shadow-xs'
+                          ? 'bg-[#01acbf] text-white shadow-xs'
                           : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                       }`}
                     >
@@ -123,7 +109,7 @@ export const DashboardPage = () => {
               {activeChild && (
                 <div className="text-center space-y-4">
                   <div className="relative inline-block">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-indigo-100 to-purple-100 border-4 border-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-2xl mx-auto shadow-sm">
+                    <div className="w-20 h-20 rounded-full bg-[#FAF9F6] border-4 border-teal-50 text-[#01acbf] flex items-center justify-center font-bold text-2xl mx-auto shadow-sm">
                       {activeChild.name.charAt(0)}
                     </div>
                   </div>
@@ -138,13 +124,13 @@ export const DashboardPage = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 pt-3 border-t border-slate-100">
-                    <div className="bg-slate-50 p-3 rounded-2xl">
+                    <div className="bg-[#FAF9F6] p-3 rounded-2xl">
                       <p className="text-[10px] text-slate-400 font-semibold uppercase">Tinggi Badan</p>
                       <p className="font-bold text-slate-800 text-xs mt-0.5">
                         {activeChild.height_cm ? `${activeChild.height_cm} cm` : '-'}
                       </p>
                     </div>
-                    <div className="bg-slate-50 p-3 rounded-2xl">
+                    <div className="bg-[#FAF9F6] p-3 rounded-2xl">
                       <p className="text-[10px] text-slate-400 font-semibold uppercase">Berat Badan</p>
                       <p className="font-bold text-slate-800 text-xs mt-0.5">
                         {activeChild.weight_kg ? `${activeChild.weight_kg} kg` : '-'}
@@ -156,13 +142,13 @@ export const DashboardPage = () => {
             </div>
           ) : (
             <div className="text-center py-6 space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto">
+              <div className="w-12 h-12 rounded-2xl bg-teal-50 text-[#01acbf] flex items-center justify-center mx-auto">
                 <Baby className="w-6 h-6" />
               </div>
               <p className="text-xs text-slate-400">Belum ada profil anak terhubung.</p>
               <button
                 onClick={() => setIsAddChildModalOpen(true)}
-                className="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-semibold text-xs py-2.5 rounded-2xl transition"
+                className="w-full bg-teal-50 hover:bg-teal-100 text-[#01acbf] font-semibold text-xs py-2.5 rounded-2xl transition"
               >
                 + Tambah Data Anak
               </button>
@@ -174,7 +160,7 @@ export const DashboardPage = () => {
       <div className="order-3 lg:col-span-2">
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
           <div className="bg-white p-3.5 sm:p-4 rounded-3xl border border-slate-100 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 shadow-xs text-center sm:text-left">
-            <div className="p-2 sm:p-2.5 rounded-2xl bg-indigo-50 text-indigo-600 shrink-0">
+            <div className="p-2 sm:p-2.5 rounded-2xl bg-teal-50 text-[#01acbf] shrink-0">
               <Clock className="w-4 h-4" />
             </div>
             <div>
@@ -184,7 +170,7 @@ export const DashboardPage = () => {
           </div>
 
           <div className="bg-white p-3.5 sm:p-4 rounded-3xl border border-slate-100 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 shadow-xs text-center sm:text-left">
-            <div className="p-2 sm:p-2.5 rounded-2xl bg-purple-50 text-purple-600 shrink-0">
+            <div className="p-2 sm:p-2.5 rounded-2xl bg-orange-50 text-[#f47946] shrink-0">
               <Award className="w-4 h-4" />
             </div>
             <div>
@@ -194,7 +180,7 @@ export const DashboardPage = () => {
           </div>
 
           <div className="bg-white p-3.5 sm:p-4 rounded-3xl border border-slate-100 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 shadow-xs text-center sm:text-left">
-            <div className="p-2 sm:p-2.5 rounded-2xl bg-amber-50 text-amber-600 shrink-0">
+            <div className="p-2 sm:p-2.5 rounded-2xl bg-amber-50 text-amber-500 shrink-0">
               <Star className="w-4 h-4" />
             </div>
             <div>
@@ -212,11 +198,11 @@ export const DashboardPage = () => {
       <div className="order-5 lg:col-span-2 space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-indigo-600" /> Catatan Aktivitas Terbaru
+            <Calendar className="w-4 h-4 text-[#01acbf]" /> Catatan Aktivitas Terbaru
           </h3>
           <button
             onClick={() => navigate('/log-aktivitas')}
-            className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-[#01acbf] hover:underline flex items-center gap-1"
           >
             Lihat Aktivitas Lain <ArrowRight className="w-3.5 h-3.5" />
           </button>
@@ -227,7 +213,7 @@ export const DashboardPage = () => {
             <p>Belum ada catatan latihan untuk anak ini.</p>
             <button
               onClick={() => navigate('/input-aktivitas')}
-              className="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-600 font-semibold px-4 py-2 rounded-2xl hover:bg-indigo-100 transition"
+              className="inline-flex items-center gap-1.5 bg-teal-50 text-[#01acbf] font-semibold px-4 py-2 rounded-2xl hover:bg-teal-100 transition"
             >
               <Plus className="w-4 h-4" /> Catat Aktivitas Hari Ini
             </button>
@@ -237,11 +223,11 @@ export const DashboardPage = () => {
             {recentLogs.map((log) => (
               <div
                 key={log.id}
-                className="bg-white p-5 rounded-3xl border border-slate-100 hover:border-indigo-100 transition shadow-xs flex flex-col md:flex-row justify-between gap-3"
+                className="bg-white p-5 rounded-3xl border border-slate-100 hover:border-teal-100 transition shadow-xs flex flex-col md:flex-row justify-between gap-3"
               >
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold bg-indigo-50 text-indigo-600 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[10px] font-bold bg-teal-50 text-[#01acbf] px-2.5 py-0.5 rounded-full">
                       {log.activity_category}
                     </span>
                     <span className="text-[11px] text-slate-400">
@@ -250,7 +236,7 @@ export const DashboardPage = () => {
                   </div>
                   <h4 className="font-bold text-slate-800 text-sm">{log.activity_name}</h4>
                   {log.notes && (
-                    <p className="text-xs text-slate-500 bg-slate-50 p-3 rounded-2xl border border-slate-100/60 mt-1">
+                    <p className="text-xs text-slate-500 bg-[#FAF9F6] p-3 rounded-2xl border border-slate-100/60 mt-1">
                       {log.notes}
                     </p>
                   )}
@@ -259,7 +245,7 @@ export const DashboardPage = () => {
                 <div className="flex md:flex-col justify-between items-end text-xs text-slate-500 border-t md:border-t-0 md:border-l border-slate-100 pt-2 md:pt-0 md:pl-4 min-w-[120px]">
                   <div>Durasi: <strong className="text-slate-700">{log.duration_minutes}m</strong></div>
                   <div>Bantuan: <strong className="text-slate-700">{log.assistance_level}</strong></div>
-                  <div>Fokus: <strong className="text-indigo-600 font-bold">{log.focus_score}/5</strong></div>
+                  <div>Fokus: <strong className="text-[#01acbf] font-bold">{log.focus_score}/5</strong></div>
                 </div>
               </div>
             ))}

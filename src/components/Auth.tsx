@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Eye, EyeOff} from 'lucide-react';
-import logoImage from '../assets/logo.png'; 
-import brandLogo from '../assets/brand_logo_001.png'; // Sesuaikan dengan nama file gambar di folder assets kamu
+import brandLogo from '../assets/brand_logo_001.png'; 
+import fontLogo from '../assets/logo_font.png'; 
 
 export const Auth = () => {
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ export const Auth = () => {
         
         <div className="w-full lg:w-1/2 p-6 lg:p-10 flex flex-col justify-between">
           <div className="flex items-center gap-2.5">
-            <img src={logoImage} alt="Journstep Logo" className="h-9 w-auto object-contain" />
+            <img src={fontLogo} alt="Journstep Logo" className="h-9 w-auto object-contain" />
           </div>
 
           <div className="my-auto py-6">
