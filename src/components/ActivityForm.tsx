@@ -14,7 +14,6 @@ interface ImageItem {
   previewUrl: string;
 }
 
-// 1. Tambahkan initialCategory dan initialActivityName di sini
 interface ActivityFormProps {
   childId: string;
   onSave: () => void;
@@ -31,7 +30,8 @@ export const ActivityForm = ({ childId, onSave, initialCategory, initialActivity
   const [savingCategory, setSavingCategory] = useState(false);
 
   const [activityName, setActivityName] = useState('');
-  const [duration, setDuration] = useState(15);
+  // Diubah ke string kosong agar saat input dihapus tidak muncul angka 0 di depan
+  const [duration, setDuration] = useState<string>('15');
   const [assistance, setAssistance] = useState<'Independent' | 'Partial Support' | 'Full Support'>('Partial Support');
   const [focusScore, setFocusScore] = useState(4);
   const [notes, setNotes] = useState('');
@@ -42,7 +42,6 @@ export const ActivityForm = ({ childId, onSave, initialCategory, initialActivity
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
-  // 2. Set nilai otomatis jika user memilih dari menu jadwal kegiatan
   useEffect(() => {
     if (initialCategory && categories.includes(initialCategory)) {
       setSelectedCategory(initialCategory);
@@ -187,7 +186,8 @@ export const ActivityForm = ({ childId, onSave, initialCategory, initialActivity
       child_id: childId,
       activity_category: selectedCategory,
       activity_name: activityName.trim(),
-      duration_minutes: Number(duration),
+      // Konversi nilai durasi ke angka saat dikirim ke database
+      duration_minutes: duration ? Number(duration) : 0,
       assistance_level: assistance,
       focus_score: focusScore,
       notes: notes.trim(),
@@ -292,8 +292,10 @@ export const ActivityForm = ({ childId, onSave, initialCategory, initialActivity
           </label>
           <input
             type="number"
+            min="1"
+            placeholder="e.g. 15"
             value={duration}
-            onChange={(e) => setDuration(Number(e.target.value))}
+            onChange={(e) => setDuration(e.target.value)}
             className="w-full p-2.5 border border-slate-200/80 rounded-2xl text-xs focus:outline-none"
           />
         </div>
