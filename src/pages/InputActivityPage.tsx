@@ -3,7 +3,7 @@ import { useOutletContext, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ActivityForm } from '../components/ActivityForm';
 import { type Child, type ActivityLog } from '../types/database';
-import { Plus, Baby, Sparkles, Calendar, ArrowRight, X, Images, CalendarCheck, Clock } from 'lucide-react';
+import { Plus, Baby, Sparkles, Calendar, ArrowRight, X, CalendarCheck, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ChildModal } from '../components/ChildModal';
 
 interface ScheduleItem {
@@ -24,6 +24,10 @@ export const InputActivityPage = () => {
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [todaysSchedules, setTodaysSchedules] = useState<ScheduleItem[]>([]);
   
+  // State untuk pagination (5 data per halaman)
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 5;
+
   // State untuk pre-fill form jika user klik dari jadwal
   const [prefilledCategory, setPrefilledCategory] = useState<string>('');
   const [prefilledName, setPrefilledName] = useState<string>('');
@@ -63,6 +67,7 @@ export const InputActivityPage = () => {
       .order('logged_at', { ascending: false });
 
     setLogs(logsData || []);
+    setCurrentPage(1); // Reset ke halaman pertama saat ganti anak
 
     // Tentukan nama hari ini dalam bahasa Indonesia
     const daysName = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -104,6 +109,11 @@ export const InputActivityPage = () => {
     setPrefilledName(schedule.activity_title);
     window.scrollTo({ top: 300, behavior: 'smooth' });
   };
+
+  // Kalkulasi data untuk pagination
+  const totalPages = Math.ceil(logs.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentLogs = logs.slice(startIndex, startIndex + itemsPerPage);
 
   if (loading) {
     return <div className="text-slate-400 font-medium py-12 text-center text-xs">Memuat data...</div>;
@@ -223,73 +233,110 @@ export const InputActivityPage = () => {
                 Belum ada catatan aktivitas untuk anak ini.
               </div>
             ) : (
-              <div className="space-y-4">
-                {logs.map((log: any) => {
-                  const photos: string[] = 
-                    Array.isArray(log.image_urls) && log.image_urls.length > 0
-                      ? log.image_urls
-                      : log.image_url || log.photo_url
-                      ? [log.image_url || log.photo_url]
-                      : [];
+              <div className="space-y-3">
+                <div className="bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="bg-teal-50/60 text-slate-600 font-bold border-b border-slate-100">
+                          <th className="p-4">Tanggal & Waktu</th>
+                          <th className="p-4">Kategori & Aktivitas</th>
+                          <th className="p-4">Durasi</th>
+                          <th className="p-4">Bantuan</th>
+                          <th className="p-4">Fokus</th>
+                          <th className="p-4">Catatan & Foto</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {currentLogs.map((log: any) => {
+                          const photos: string[] = 
+                            Array.isArray(log.image_urls) && log.image_urls.length > 0
+                              ? log.image_urls
+                              : log.image_url || log.photo_url
+                              ? [log.image_url || log.photo_url]
+                              : [];
 
-                  return (
-                    <div
-                      key={log.id}
-                      className="bg-white p-5 rounded-3xl border border-slate-100 hover:border-teal-100 transition shadow-xs space-y-3"
-                    >
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-50 pb-3">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-bold bg-teal-50 text-[#01acbf] px-2.5 py-0.5 rounded-full">
-                            {log.activity_category}
-                          </span>
-                          <span className="text-[11px] text-slate-400">
-                            {log.logged_at ? new Date(log.logged_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : ''}
-                          </span>
-                        </div>
+                          return (
+                            <tr key={log.id} className="hover:bg-slate-50/50 transition align-top">
+                              <td className="p-4 text-slate-500 whitespace-nowrap">
+                                {log.logged_at ? new Date(log.logged_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : ''}
+                              </td>
+                              <td className="p-4 space-y-1">
+                                <span className="inline-block text-[10px] font-bold bg-teal-50 text-[#01acbf] px-2.5 py-0.5 rounded-full">
+                                  {log.activity_category}
+                                </span>
+                                <div className="font-bold text-slate-800 text-xs">{log.activity_name}</div>
+                              </td>
+                              <td className="p-4 whitespace-nowrap">
+                                <strong className="text-slate-700">{log.duration_minutes}m</strong>
+                              </td>
+                              <td className="p-4 whitespace-nowrap">
+                                <strong className="text-slate-700">{log.assistance_level}</strong>
+                              </td>
+                              <td className="p-4 whitespace-nowrap">
+                                <strong className="text-[#01acbf] font-bold">{log.focus_score}/5</strong>
+                              </td>
+                              <td className="p-4 space-y-2 max-w-xs">
+                                {log.notes && (
+                                  <p className="text-slate-600 bg-[#FAF9F6] p-2.5 rounded-xl border border-slate-100/60 text-[11px] leading-relaxed">
+                                    {log.notes}
+                                  </p>
+                                )}
+                                {photos.length > 0 && (
+                                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+                                    {photos.map((photoUrl, idx) => (
+                                      <div
+                                        key={idx}
+                                        onClick={() => setSelectedImageUrl(photoUrl)}
+                                        className="relative w-12 h-12 rounded-xl overflow-hidden border border-slate-200 shrink-0 cursor-pointer hover:opacity-90 transition shadow-2xs"
+                                      >
+                                        <img
+                                          src={photoUrl}
+                                          alt={`${log.activity_name} ${idx + 1}`}
+                                          className="w-full h-full object-cover"
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 
-                        <div className="flex items-center gap-3 text-xs text-slate-500">
-                          <div>Durasi: <strong className="text-slate-700">{log.duration_minutes}m</strong></div>
-                          <span className="text-slate-200">•</span>
-                          <div>Bantuan: <strong className="text-slate-700">{log.assistance_level}</strong></div>
-                          <span className="text-slate-200">•</span>
-                          <div>Fokus: <strong className="text-[#01acbf] font-bold">{log.focus_score}/5</strong></div>
-                        </div>
-                      </div>
+                {/* Kontrol Pagination (5 data per halaman) */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-between px-2 pt-2">
+                    <span className="text-[11px] text-slate-500">
+                      Menampilkan halaman {currentPage} dari {totalPages} (Total {logs.length} data)
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        className="p-2 bg-white border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      
+                      <span className="text-xs font-bold px-3 py-1 bg-teal-50 text-[#01acbf] rounded-xl border border-teal-100">
+                        {currentPage} / {totalPages}
+                      </span>
 
-                      <div>
-                        <h4 className="font-bold text-slate-800 text-sm">{log.activity_name}</h4>
-                        {log.notes && (
-                          <p className="text-xs text-slate-600 bg-[#FAF9F6] p-3 rounded-2xl border border-slate-100/60 mt-2">
-                            {log.notes}
-                          </p>
-                        )}
-                      </div>
-
-                      {photos.length > 0 && (
-                        <div className="pt-2">
-                          <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 mb-2">
-                            <Images className="w-3.5 h-3.5 text-[#01acbf]" /> Foto Dokumentasi ({photos.length})
-                          </div>
-                          <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-thin">
-                            {photos.map((photoUrl, idx) => (
-                              <div
-                                key={idx}
-                                onClick={() => setSelectedImageUrl(photoUrl)}
-                                className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border border-slate-100 shrink-0 cursor-pointer hover:opacity-90 transition group shadow-2xs"
-                              >
-                                <img
-                                  src={photoUrl}
-                                  alt={`${log.activity_name} ${idx + 1}`}
-                                  className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                      <button
+                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                        className="p-2 bg-white border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
                     </div>
-                  );
-                })}
+                  </div>
+                )}
               </div>
             )}
           </div>

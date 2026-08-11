@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { type Child } from '../types/database';
-import { CalendarDays, Clock, Plus, Trash2, Sparkles, BookOpen, ChevronLeft, ChevronRight, X, Activity, Play } from 'lucide-react';
+import { CalendarDays, Clock, Plus, Trash2, Sparkles, BookOpen, ChevronLeft, ChevronRight, X, Activity, Play, ArrowRight } from 'lucide-react';
 import { ActivityForm } from '../components/ActivityForm';
 
 interface ScheduleItem {
@@ -24,7 +24,7 @@ const DEFAULT_CATEGORIES = [
 
 export const SchedulesPage = () => {
   const { session } = useOutletContext<{ session: any }>();
-  // Catatan: 'navigate' dihapus karena tidak digunakan
+  const navigate = useNavigate(); // Diaktifkan kembali untuk navigasi menu Lihat Semua Aktivitas
   
   const [children, setChildren] = useState<Child[]>([]);
   const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
@@ -152,8 +152,8 @@ export const SchedulesPage = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6 px-3 sm:px-0 pb-12">
-      {/* Banner Utama */}
-      <div className="bg-[#01acbf] text-white p-5 sm:p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col justify-between">
+      {/* Banner Utama dengan Tombol Lihat Semua Aktivitas */}
+      <div className="bg-[#01acbf] text-white p-5 sm:p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <Sparkles className="w-24 h-24 sm:w-32 sm:h-32 absolute -right-6 -bottom-6 text-white/10" />
         <div className="relative z-10 max-w-md">
           <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-white backdrop-blur-md">
@@ -166,6 +166,13 @@ export const SchedulesPage = () => {
             Klik tanggal beragenda untuk memilih dan memulai sesi latihan sesuai waktunya.
           </p>
         </div>
+
+        <button
+          onClick={() => navigate('/log-aktivitas')}
+          className="relative z-10 flex items-center justify-center gap-2 bg-white text-[#01acbf] hover:bg-teal-50 px-5 py-3 rounded-full text-xs font-semibold transition shadow-md shrink-0"
+        >
+          Lihat Semua Aktivitas <ArrowRight className="w-4 h-4" />
+        </button>
       </div>
 
       {/* Form Tambah Jadwal */}

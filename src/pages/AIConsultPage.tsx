@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { generateWeeklySummary, askAIConsultation } from '../lib/gemini';
-import { Sparkles, Send, Bot, User, RefreshCw, Activity } from 'lucide-react';
+import { Sparkles, Send, Bot, User, RefreshCw, Activity, AlertTriangle} from 'lucide-react';
 import { type Child, type ActivityLog } from '../types/database';
 
 export const AIConsultPage = () => {
@@ -13,6 +13,9 @@ export const AIConsultPage = () => {
 
   const [summary, setSummary] = useState<string | null>(null);
   const [loadingSummary, setLoadingSummary] = useState(false);
+
+  // State untuk Modal Dialog Peringatan Error Kustom
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([
     { role: 'ai', text: 'Halo Ayah/Bunda! Ada yang ingin dikonsultasikan seputar tumbuh kembang atau stimulasi motorik buah hati?' },
@@ -58,7 +61,7 @@ export const AIConsultPage = () => {
       const result = await generateWeeklySummary(selectedChild.name, logs);
       setSummary(result || 'Tidak ada rangkuman yang dihasilkan.');
     } catch (err: any) {
-      alert(err.message);
+      setErrorMessage(err.message || 'Terjadi kesalahan saat menghasilkan analisis AI.');
     } finally {
       setLoadingSummary(false);
     }
@@ -84,7 +87,7 @@ export const AIConsultPage = () => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6">
+    <div className="w-full max-w-5xl mx-auto space-y-6 pb-12">
       {/* Banner tanpa gradien, warna solid toska ceria */}
       <div className="bg-[#01acbf] text-white p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col justify-between">
         <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-white/10" />
@@ -219,6 +222,38 @@ export const AIConsultPage = () => {
           </form>
         </div>
       </div>
+
+      {/* MODAL DIALOG KUSTOM UNTUK PESAN ERROR */}
+      {errorMessage && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setErrorMessage(null)}
+        >
+          <div
+            className="relative max-w-sm w-full bg-white p-6 rounded-3xl shadow-2xl space-y-4 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center mx-auto">
+              <AlertTriangle className="w-6 h-6" />
+            </div>
+
+            <div className="space-y-1">
+              <h3 className="font-bold text-slate-800 text-base">Terjadi Kendala</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                {errorMessage}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setErrorMessage(null)}
+              className="w-full py-2.5 bg-[#01acbf] hover:bg-[#0198a8] text-white font-semibold rounded-2xl text-xs transition shadow-md shadow-teal-100"
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

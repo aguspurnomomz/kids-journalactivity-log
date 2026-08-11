@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { NavLink, Outlet, useOutletContext, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { LayoutDashboard, Users, LogOut, Sparkles, Bell, Mail, PlusCircle } from 'lucide-react';
+import { LayoutDashboard, Users, LogOut, Sparkles, Bell, Mail, PlusCircle, AlertTriangle} from 'lucide-react';
 import { CalendarDays } from 'lucide-react';
 import logoImage from '../assets/logo.png';
 
@@ -8,13 +9,16 @@ export const MainLayout = () => {
   const { session } = useOutletContext<{ session: any }>();
   const navigate = useNavigate();
 
+  // State untuk mengontrol modal konfirmasi logout kustom
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [loadingLogout, setLoadingLogout] = useState(false);
+
   const handleSignOut = async () => {
-    const confirmLogout = window.confirm('Apakah Anda yakin akan keluar?');
-    
-    if (confirmLogout) {
-      await supabase.auth.signOut();
-      navigate('/login');
-    }
+    setLoadingLogout(true);
+    await supabase.auth.signOut();
+    setLoadingLogout(false);
+    setIsLogoutModalOpen(false);
+    navigate('/login');
   };
 
   const navItems = [
@@ -23,7 +27,6 @@ export const MainLayout = () => {
     { to: '/input-aktivitas', label: 'Aktivitas Hari Ini', icon: PlusCircle },
     { to: '/jadwal', label: 'Agenda', icon: CalendarDays },
     { to: '/ai-konsultasi', label: 'AI Konsul', icon: Sparkles }
-    // { to: '/pengingat', label: 'Pengingat', icon: Bell } 
   ];
 
   return (
@@ -35,7 +38,7 @@ export const MainLayout = () => {
           <img src={logoImage} alt="Journstep Logo" className="h-8 w-auto object-contain" />
         </div>
         <button
-          onClick={handleSignOut}
+          onClick={() => setIsLogoutModalOpen(true)}
           title="Keluar"
           className="p-2 text-slate-400 hover:text-red-500 rounded-xl transition"
         >
@@ -88,7 +91,7 @@ export const MainLayout = () => {
               </div>
             </div>
             <button
-              onClick={handleSignOut}
+              onClick={() => setIsLogoutModalOpen(true)}
               title="Keluar"
               className="p-2 text-slate-400 hover:text-red-500 hover:bg-white rounded-xl transition"
             >
@@ -124,16 +127,7 @@ export const MainLayout = () => {
       {/* 4. KONTEN UTAMA */}
       <div className="flex-1 flex flex-col min-w-0">
         <header className="hidden md:flex items-center justify-between px-8 py-5 bg-[#FAF9F6]">
-          {/* <div className="relative w-96">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Cari aktivitas atau catatan latihan..."
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200/60 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-[#01acbf]/20 shadow-xs"
-            />
-          </div> */}
-
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 ml-auto">
             <button className="w-9 h-9 rounded-full bg-white border border-slate-200/60 flex items-center justify-center text-slate-500 hover:bg-slate-50 transition">
               <Mail className="w-4 h-4" />
             </button>
@@ -147,6 +141,49 @@ export const MainLayout = () => {
           <Outlet context={{ session }} />
         </main>
       </div>
+
+      {/* 5. MODAL KONFIRMASI KELUAR (CUSTOM KELUAR APLIKASI) */}
+      {isLogoutModalOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setIsLogoutModalOpen(false)}
+        >
+          <div
+            className="relative max-w-sm w-full bg-white p-6 rounded-3xl shadow-2xl space-y-4 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center mx-auto">
+              <AlertTriangle className="w-6 h-6" />
+            </div>
+
+            <div className="space-y-1">
+              <h3 className="font-bold text-slate-800 text-base">Perhatian</h3>
+              <p className="text-xs text-slate-500">
+                Apakah Anda yakin ingin keluar dari akun Anda?
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 pt-2">
+              <button
+                type="button"
+                disabled={loadingLogout}
+                onClick={() => setIsLogoutModalOpen(false)}
+                className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-2xl text-xs transition"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                disabled={loadingLogout}
+                onClick={handleSignOut}
+                className="flex-1 py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-semibold rounded-2xl text-xs transition shadow-md shadow-rose-100 flex items-center justify-center gap-1.5"
+              >
+                {loadingLogout ? 'Keluar...' : 'Ya, Keluar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
