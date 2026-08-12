@@ -1,33 +1,28 @@
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 
-// Masukkan konfigurasi Firebase yang sudah Anda salin sebelumnya dari Firebase Console
 const firebaseConfig = {
-  apiKey: "AIzaSyDNyYNNaYg_-r9fta_IdemP6lPC1mMUd2E",
-  authDomain: "jurnalsikecil-bc8c7.firebaseapp.com",
-  projectId: "jurnalsikecil-bc8c7",
-  storageBucket: "jurnalsikecil-bc8c7.firebasestorage.app",
-  messagingSenderId: "1056020643691",
-  appId: "1:1056020643691:web:a3968c458d3c4223d0d62e"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
 
-// Fungsi untuk meminta izin dan mendapatkan FCM Token
 export const requestNotificationPermission = async (userId: string, supabaseClient: any) => {
   try {
     const permission = await Notification.requestPermission();
     if (permission === 'granted') {
-      // Dapatkan token FCM menggunakan VAPID Key Anda (Diperbaiki: menggunakan 'const currentToken')
       const currentToken = await getToken(messaging, {
-        vapidKey: 'BLVTMYjN5XGAlRYBjf_MwjpD-cd7W04FmkwlyQN7KJ4rl6H345UMwcynN1HJ7DBYcB3FNq10qBU9I1A4KdUxdZg'
+        vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
       });
 
       if (currentToken) {
-        // Simpan atau perbarui token ke tabel Supabase
-        const { error } = await supabaseClient
+        await supabaseClient
           .from('user_fcm_tokens')
           .upsert(
             { 
@@ -38,24 +33,13 @@ export const requestNotificationPermission = async (userId: string, supabaseClie
             },
             { onConflict: 'fcm_token' }
           );
-
-        if (error) {
-          console.error('Gagal menyimpan FCM token ke Supabase:', error.message);
-        } else {
-          console.log('FCM Token berhasil disimpan:', currentToken);
-        }
-      } else {
-        console.warn('Tidak dapat menghasilkan token registrasi.');
       }
-    } else {
-      console.log('Izin notifikasi ditolak oleh pengguna.');
     }
   } catch (error) {
-    console.error('Terjadi kesalahan saat meminta izin notifikasi:', error);
+    console.error('Terjadi kesalahan:', error);
   }
 };
 
-// Listener untuk pesan masuk saat aplikasi sedang dibuka (foreground)
 export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {

@@ -1,8 +1,7 @@
-// Import Firebase scripts untuk Service Worker
 importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js');
 
-// Inisialisasi Firebase di background service worker
+
 firebase.initializeApp({
   apiKey: "AIzaSyDNyYNNaYg_-r9fta_IdemP6lPC1mMUd2E",
   authDomain: "jurnalsikecil-bc8c7.firebaseapp.com",
@@ -14,7 +13,7 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// Menangani background push notification
+
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Menerima pesan background: ', payload);
   const notificationTitle = payload.notification.title;
