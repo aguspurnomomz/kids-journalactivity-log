@@ -120,9 +120,9 @@ export const InputActivityPage = () => {
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6">
+    <div className="w-full max-w-5xl mx-auto space-y-6 pb-12">
       {/* Banner */}
-      <div className="bg-[#01acbf] text-white p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-[#01acbf] text-white p-6 sm:p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-white/10" />
         <Sparkles className="w-16 h-16 absolute right-32 top-2 text-white/10" />
 
@@ -130,7 +130,7 @@ export const InputActivityPage = () => {
           <span className="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full text-white backdrop-blur-md">
             Input Aktivitas Harian
           </span>
-          <h2 className="text-2xl font-bold mt-2 leading-snug">
+          <h2 className="text-xl sm:text-2xl font-bold mt-2 leading-snug">
             Jurnal Aktivitas Hari Ini
           </h2>
           <p className="text-xs text-teal-50 mt-1">
@@ -235,16 +235,16 @@ export const InputActivityPage = () => {
             ) : (
               <div className="space-y-3">
                 <div className="bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse text-xs">
+                  <div className="overflow-x-auto scrollbar-thin">
+                    <table className="w-full min-w-[780px] text-left border-collapse text-xs">
                       <thead>
                         <tr className="bg-teal-50/60 text-slate-600 font-bold border-b border-slate-100">
-                          <th className="p-4">Tanggal & Waktu</th>
-                          <th className="p-4">Kategori & Aktivitas</th>
-                          <th className="p-4">Durasi</th>
-                          <th className="p-4">Bantuan</th>
-                          <th className="p-4">Fokus</th>
-                          <th className="p-4">Catatan & Foto</th>
+                          <th className="p-3.5 w-36">Tanggal & Waktu</th>
+                          <th className="p-3.5 w-64">Kategori & Aktivitas</th>
+                          <th className="p-3.5 w-20">Durasi</th>
+                          <th className="p-3.5 w-32">Bantuan</th>
+                          <th className="p-3.5 w-20">Fokus</th>
+                          <th className="p-3.5">Catatan & Foto</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -258,25 +258,25 @@ export const InputActivityPage = () => {
 
                           return (
                             <tr key={log.id} className="hover:bg-slate-50/50 transition align-top">
-                              <td className="p-4 text-slate-500 whitespace-nowrap">
+                              <td className="p-3.5 text-slate-500 whitespace-nowrap">
                                 {log.logged_at ? new Date(log.logged_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : ''}
                               </td>
-                              <td className="p-4 space-y-1">
-                                <span className="inline-block text-[10px] font-bold bg-teal-50 text-[#01acbf] px-2.5 py-0.5 rounded-full">
+                              <td className="p-3.5 space-y-1.5">
+                                <span className="inline-block text-[10px] font-bold bg-teal-50 text-[#01acbf] px-2.5 py-1 rounded-xl whitespace-normal leading-tight">
                                   {log.activity_category}
                                 </span>
                                 <div className="font-bold text-slate-800 text-xs">{log.activity_name}</div>
                               </td>
-                              <td className="p-4 whitespace-nowrap">
+                              <td className="p-3.5 whitespace-nowrap">
                                 <strong className="text-slate-700">{log.duration_minutes}m</strong>
                               </td>
-                              <td className="p-4 whitespace-nowrap">
+                              <td className="p-3.5 whitespace-nowrap">
                                 <strong className="text-slate-700">{log.assistance_level}</strong>
                               </td>
-                              <td className="p-4 whitespace-nowrap">
+                              <td className="p-3.5 whitespace-nowrap">
                                 <strong className="text-[#01acbf] font-bold">{log.focus_score}/5</strong>
                               </td>
-                              <td className="p-4 space-y-2 max-w-xs">
+                              <td className="p-3.5 space-y-2 min-w-[220px]">
                                 {log.notes && (
                                   <p className="text-slate-600 bg-[#FAF9F6] p-2.5 rounded-xl border border-slate-100/60 text-[11px] leading-relaxed">
                                     {log.notes}
@@ -312,7 +312,7 @@ export const InputActivityPage = () => {
                 {totalPages > 1 && (
                   <div className="flex items-center justify-between px-2 pt-2">
                     <span className="text-[11px] text-slate-500">
-                      Menampilkan halaman {currentPage} dari {totalPages} (Total {logs.length} data)
+                      Halaman {currentPage} dari {totalPages} (Total {logs.length} data)
                     </span>
                     <div className="flex items-center gap-1.5">
                       <button
