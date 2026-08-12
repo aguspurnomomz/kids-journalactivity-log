@@ -23,9 +23,9 @@ export const MainLayout = () => {
 
   const navItems = [
     { to: '/', label: 'Dashboard', icon: LayoutDashboard },
-    { to: '/children', label: 'Data Anak', icon: Users },
-    { to: '/input-aktivitas', label: 'Aktivitas Hari Ini', icon: PlusCircle },
     { to: '/jadwal', label: 'Agenda', icon: CalendarDays },
+    { to: '/input-aktivitas', label: 'Aktivitas Hari Ini', icon: PlusCircle },
+    { to: '/children', label: 'Data Anak', icon: Users },
     { to: '/ai-konsultasi', label: 'AI Agent', icon: Sparkles }
   ];
 
