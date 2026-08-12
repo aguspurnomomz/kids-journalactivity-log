@@ -76,7 +76,7 @@ export const ActivityLogsPage = () => {
 
     const { data } = await query;
     setLogs(data || []);
-    setCurrentPage(1); // Reset ke halaman pertama saat filter/anak berubah
+    setCurrentPage(1);
   };
 
   useEffect(() => {
@@ -179,7 +179,6 @@ export const ActivityLogsPage = () => {
     }
   };
 
-  // Kalkulasi data untuk pagination
   const totalPages = Math.ceil(logs.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentLogs = logs.slice(startIndex, startIndex + itemsPerPage);
@@ -189,9 +188,9 @@ export const ActivityLogsPage = () => {
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6">
+    <div className="w-full max-w-5xl mx-auto space-y-6 pb-12">
       {/* Banner */}
-      <div className="bg-[#01acbf] text-white p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-[#01acbf] text-white p-6 sm:p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <Sparkles className="w-32 h-32 absolute -right-6 -bottom-6 text-white/10" />
         <Sparkles className="w-16 h-16 absolute right-32 top-2 text-white/10" />
 
@@ -202,7 +201,7 @@ export const ActivityLogsPage = () => {
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Kembali
           </button>
-          <h2 className="text-2xl font-bold leading-snug">Riwayat Semua Aktivitas</h2>
+          <h2 className="text-xl sm:text-2xl font-bold leading-snug">Riwayat Semua Aktivitas</h2>
           <p className="text-xs text-teal-50 mt-1">
             Filter dan pantau seluruh aktivitas harian anak anda.
           </p>
@@ -212,7 +211,7 @@ export const ActivityLogsPage = () => {
       {children.length > 0 ? (
         <div className="space-y-6">
           {/* Filter Bar */}
-          <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-5">
+          <div className="bg-white p-4 sm:p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
             <div>
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {children.map((child) => (
@@ -232,7 +231,7 @@ export const ActivityLogsPage = () => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div className="pt-3 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
               <div>
                 <label className="block text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
                   <Filter className="w-3.5 h-3.5 text-[#01acbf]" /> Kategori Kegiatan
@@ -301,18 +300,19 @@ export const ActivityLogsPage = () => {
               </div>
             ) : (
               <div className="space-y-3">
+                {/* Pembungkus Responsif dengan Horizontal Scroll */}
                 <div className="bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse text-xs">
+                  <div className="overflow-x-auto scrollbar-thin">
+                    <table className="w-full min-w-[780px] text-left border-collapse text-xs">
                       <thead>
                         <tr className="bg-teal-50/60 text-slate-600 font-bold border-b border-slate-100">
-                          <th className="p-4">Tanggal & Waktu</th>
-                          <th className="p-4">Kategori & Aktivitas</th>
-                          <th className="p-4">Durasi</th>
-                          <th className="p-4">Bantuan</th>
-                          <th className="p-4">Fokus</th>
-                          <th className="p-4">Catatan & Foto</th>
-                          <th className="p-4 text-center">Aksi</th>
+                          <th className="p-3.5 w-36">Tanggal & Waktu</th>
+                          <th className="p-3.5 w-64">Kategori & Aktivitas</th>
+                          <th className="p-3.5 w-20">Durasi</th>
+                          <th className="p-3.5 w-32">Bantuan</th>
+                          <th className="p-3.5 w-20">Fokus</th>
+                          <th className="p-3.5">Catatan & Foto</th>
+                          <th className="p-3.5 text-center w-24">Aksi</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -452,25 +452,25 @@ export const ActivityLogsPage = () => {
                                 </td>
                               ) : (
                                 <>
-                                  <td className="p-4 text-slate-500 whitespace-nowrap">
+                                  <td className="p-3.5 text-slate-500 whitespace-nowrap">
                                     {log.logged_at ? new Date(log.logged_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : ''}
                                   </td>
-                                  <td className="p-4 space-y-1">
-                                    <span className="inline-block text-[10px] font-bold bg-teal-50 text-[#01acbf] px-2.5 py-0.5 rounded-full">
+                                  <td className="p-3.5 space-y-1.5">
+                                    <span className="inline-block text-[10px] font-bold bg-teal-50 text-[#01acbf] px-2.5 py-1 rounded-xl whitespace-normal leading-tight">
                                       {log.activity_category}
                                     </span>
                                     <div className="font-bold text-slate-800 text-xs">{log.activity_name}</div>
                                   </td>
-                                  <td className="p-4 whitespace-nowrap">
+                                  <td className="p-3.5 whitespace-nowrap">
                                     <strong className="text-slate-700">{log.duration_minutes}m</strong>
                                   </td>
-                                  <td className="p-4 whitespace-nowrap">
+                                  <td className="p-3.5 whitespace-nowrap">
                                     <strong className="text-slate-700">{log.assistance_level}</strong>
                                   </td>
-                                  <td className="p-4 whitespace-nowrap">
+                                  <td className="p-3.5 whitespace-nowrap">
                                     <strong className="text-[#01acbf] font-bold">{log.focus_score}/5</strong>
                                   </td>
-                                  <td className="p-4 space-y-2 max-w-xs">
+                                  <td className="p-3.5 space-y-2 min-w-[220px]">
                                     {log.notes && (
                                       <p className="text-slate-600 bg-[#FAF9F6] p-2.5 rounded-xl border border-slate-100/60 text-[11px] leading-relaxed">
                                         {log.notes}
@@ -494,7 +494,7 @@ export const ActivityLogsPage = () => {
                                       </div>
                                     )}
                                   </td>
-                                  <td className="p-4 text-center whitespace-nowrap">
+                                  <td className="p-3.5 text-center whitespace-nowrap">
                                     <button
                                       onClick={() => handleStartEdit(log)}
                                       className="px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-[#01acbf] font-semibold rounded-xl transition inline-flex items-center gap-1 text-[11px]"
@@ -516,7 +516,7 @@ export const ActivityLogsPage = () => {
                 {totalPages > 1 && (
                   <div className="flex items-center justify-between px-2 pt-2">
                     <span className="text-[11px] text-slate-500">
-                      Menampilkan halaman {currentPage} dari {totalPages} (Total {logs.length} data)
+                      Halaman {currentPage} dari {totalPages} (Total {logs.length} data)
                     </span>
                     <div className="flex items-center gap-1.5">
                       <button
