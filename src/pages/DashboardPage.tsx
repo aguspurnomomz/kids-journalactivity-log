@@ -5,6 +5,7 @@ import { ChildModal } from '../components/ChildModal';
 import { type Child, type ActivityLog } from '../types/database';
 import { Calendar, Plus, Sparkles, Clock, Award, Star, Baby, ArrowRight } from 'lucide-react';
 import { AnalyticsCharts } from '../components/AnalyticsCharts';
+import { requestNotificationPermission } from '../lib/firebase'; // <-- 1. Import fungsi FCM
 
 export const DashboardPage = () => {
   const { session } = useOutletContext<{ session: any }>();
@@ -18,6 +19,9 @@ export const DashboardPage = () => {
 
   const fetchChildrenAndLogs = async () => {
     if (!session?.user) return;
+
+    // 2. Meminta izin dan mendaftarkan FCM token saat sesi pengguna aktif
+    requestNotificationPermission(session.user.id, supabase);
 
     const { data: childrenData } = await supabase
       .from('children')

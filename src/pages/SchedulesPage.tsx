@@ -398,7 +398,7 @@ export const SchedulesPage = () => {
                         <Clock className="w-3 h-3" /> {sch.time_slot} WIB
                       </span>
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isReady ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                        {isReady ? '✔ Waktu Tiba' : '⏳ Belum Waktunya'}
+                        {isReady ? '✔ Waktu Tiba' : '⏳ Belum berlangsung '}
                       </span>
                     </div>
 
