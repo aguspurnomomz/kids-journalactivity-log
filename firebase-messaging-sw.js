@@ -4,12 +4,12 @@ importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-comp
 
 // Inisialisasi Firebase di background service worker
 firebase.initializeApp({
-  apiKey: "MASUKKAN_API_KEY_ANDA",
-  authDomain: "MASUKKAN_AUTH_DOMAIN_ANDA",
-  projectId: "MASUKKAN_PROJECT_ID_ANDA",
-  storageBucket: "MASUKKAN_STORAGE_BUCKET_ANDA",
-  messagingSenderId: "MASUKKAN_MESSAGING_SENDER_ID_ANDA",
-  appId: "MASUKKAN_APP_ID_ANDA"
+  apiKey: "AIzaSyDNyYNNaYg_-r9fta_IdemP6lPC1mMUd2E",
+  authDomain: "jurnalsikecil-bc8c7.firebaseapp.com",
+  projectId: "jurnalsikecil-bc8c7",
+  storageBucket: "jurnalsikecil-bc8c7.firebasestorage.app",
+  messagingSenderId: "1056020643691",
+  appId: "1:1056020643691:web:a3968c458d3c4223d0d62e"
 });
 
 const messaging = firebase.messaging();
