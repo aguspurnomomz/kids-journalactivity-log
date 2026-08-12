@@ -13,8 +13,6 @@ export const AIConsultPage = () => {
 
   const [summary, setSummary] = useState<string | null>(null);
   const [loadingSummary, setLoadingSummary] = useState(false);
-
-  // State untuk Modal Dialog Peringatan Error Kustom
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([
@@ -223,7 +221,6 @@ export const AIConsultPage = () => {
         </div>
       </div>
 
-      {/* MODAL DIALOG KUSTOM UNTUK PESAN ERROR */}
       {errorMessage && (
         <div
           className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"

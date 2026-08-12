@@ -14,16 +14,13 @@ export const ActivityLogsPage = () => {
   const [loading, setLoading] = useState(true);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
-  // Pagination States (5 data per halaman)
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 5;
 
-  // Filter States
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
 
-  // Edit Modal / State
   const [editingLogId, setEditingLogId] = useState<string | null>(null);
   const [editDuration, setEditDuration] = useState<string>('15');
   const [editAssistance, setEditAssistance] = useState<string>('');
@@ -300,7 +297,6 @@ export const ActivityLogsPage = () => {
               </div>
             ) : (
               <div className="space-y-3">
-                {/* Pembungkus Responsif dengan Horizontal Scroll */}
                 <div className="bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden">
                   <div className="overflow-x-auto scrollbar-thin">
                     <table className="w-full min-w-[780px] text-left border-collapse text-xs">
@@ -512,7 +508,6 @@ export const ActivityLogsPage = () => {
                   </div>
                 </div>
 
-                {/* Kontrol Pagination */}
                 {totalPages > 1 && (
                   <div className="flex items-center justify-between px-2 pt-2">
                     <span className="text-[11px] text-slate-500">
@@ -551,7 +546,6 @@ export const ActivityLogsPage = () => {
         </div>
       )}
 
-      {/* Modal Preview Zoom Gambar */}
       {selectedImageUrl && (
         <div
           className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4"

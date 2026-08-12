@@ -5,7 +5,7 @@ import { ChildModal } from '../components/ChildModal';
 import { type Child, type ActivityLog } from '../types/database';
 import { Calendar, Plus, Sparkles, Clock, Award, Star, Baby, ArrowRight } from 'lucide-react';
 import { AnalyticsCharts } from '../components/AnalyticsCharts';
-import { requestNotificationPermission } from '../lib/firebase'; // <-- 1. Import fungsi FCM
+import { requestNotificationPermission, onMessageListener } from '../lib/firebase'; // <-- 1. Ditambahkan onMessageListener
 
 export const DashboardPage = () => {
   const { session } = useOutletContext<{ session: any }>();
@@ -20,7 +20,7 @@ export const DashboardPage = () => {
   const fetchChildrenAndLogs = async () => {
     if (!session?.user) return;
 
-    // 2. Meminta izin dan mendaftarkan FCM token saat sesi pengguna aktif
+    // Meminta izin dan mendaftarkan FCM token saat sesi pengguna aktif
     requestNotificationPermission(session.user.id, supabase);
 
     const { data: childrenData } = await supabase
@@ -56,6 +56,23 @@ export const DashboardPage = () => {
   useEffect(() => {
     fetchChildrenAndLogs();
   }, [session, activeChild?.id]);
+
+  // <-- 2. Tambahkan useEffect untuk mendengarkan pesan masuk secara real-time (Foreground)
+  useEffect(() => {
+    onMessageListener()
+      .then((payload: any) => {
+        console.log("Notifikasi diterima secara foreground: ", payload);
+        
+        // Munculkan pop-up notifikasi secara visual di browser
+        if (Notification.permission === 'granted') {
+          new Notification(payload.notification?.title || 'Jurnal Latihan', {
+            body: payload.notification?.body || 'Ada agenda latihan baru!',
+            icon: '/favicon.ico',
+          });
+        }
+      })
+      .catch((err) => console.log('Gagal mendengarkan pesan: ', err));
+  }, []);
 
   if (loading) {
     return <div className="text-slate-400 font-medium py-12 text-center text-xs">Memuat dashboard...</div>;

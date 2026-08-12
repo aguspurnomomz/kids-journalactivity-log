@@ -71,19 +71,20 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Dapatkan tanggal dan jam saat ini (WIB / zona waktu lokal Anda)
-    // Sesuaikan format dengan kolom schedule_date (YYYY-MM-DD) dan time_slot (HH:MM)
     const now = new Date();
+    now.setHours(now.getHours() + 7);
+    
     const currentDate = now.toISOString().split("T")[0];
     const currentHours = String(now.getHours()).padStart(2, '0');
     const currentMinutes = String(now.getMinutes()).padStart(2, '0');
     const currentTimeSlot = `${currentHours}:${currentMinutes}`;
 
-    console.log(`Mengecek jadwal untuk Tanggal: ${currentDate}, Jam: ${currentTimeSlot}`);
+    console.log(`Mengecek jadwal untuk Tanggal: ${currentDate}, Jam WIB: ${currentTimeSlot}`);
 
-    // Cari jadwal yang waktunya cocok dengan detik/menit ini
+    // 1. Cari jadwal murni tanpa join relasi yang berisiko error
     const { data: schedules, error: schedError } = await supabase
       .from("activity_schedules")
-      .select("*, children(name)")
+      .select("*")
       .eq("schedule_date", currentDate)
       .eq("time_slot", currentTimeSlot);
 
@@ -100,14 +101,21 @@ serve(async (req) => {
     const results = [];
 
     for (const sch of schedules) {
-      // Ambil FCM Token milik user yang memiliki jadwal ini
+      // 2. Ambil nama anak secara terpisah berdasarkan ID anak yang ada di jadwal
+      const { data: childData } = await supabase
+        .from("children")
+        .select("name")
+        .eq("id", sch.child_id)
+        .single();
+
+      const childName = childData?.name || "Anak";
+
+      // 3. Ambil FCM Token milik user yang memiliki jadwal ini
       const { data: tokens, error: tokenError } = await supabase
         .from("user_fcm_tokens")
         .eq("user_id", sch.user_id);
 
       if (tokenError || !tokens || tokens.length === 0) continue;
-
-      const childName = sch.children?.name || "Anak";
 
       for (const t of tokens) {
         // Payload pesan FCM v1

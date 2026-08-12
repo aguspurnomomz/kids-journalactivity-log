@@ -8,7 +8,7 @@ import { InputActivityPage } from './pages/InputActivityPage';
 import { AIConsultPage } from './pages/AIConsultPage';
 import { RemindersPage } from './pages/RemindersPage';
 import { ActivityLogsPage } from './pages/ActivityLogsPage';
-import { SchedulesPage } from './pages/SchedulesPage'; // <-- Import halaman Jadwal Kegiatan baru
+import { SchedulesPage } from './pages/SchedulesPage'; 
 
 export default function App() {
   return (

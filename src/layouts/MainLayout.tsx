@@ -9,7 +9,6 @@ export const MainLayout = () => {
   const { session } = useOutletContext<{ session: any }>();
   const navigate = useNavigate();
 
-  // State untuk mengontrol modal konfirmasi logout kustom
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [loadingLogout, setLoadingLogout] = useState(false);
 
@@ -32,7 +31,7 @@ export const MainLayout = () => {
   return (
     <div className="min-h-screen bg-[#FAF9F6] flex flex-col md:flex-row text-slate-800 font-sans pb-20 md:pb-0">
       
-      {/* 1. MOBILE NAVBAR HEADER ATAS */}
+      {/* Mobile Navbar */}
       <div className="md:hidden bg-white border-b border-slate-100 p-4 flex items-center justify-between sticky top-0 z-30 shadow-xs">
         <div className="flex items-center gap-2.5">
           <img src={logoImage} alt="Journstep Logo" className="h-8 w-auto object-contain" />
@@ -46,7 +45,7 @@ export const MainLayout = () => {
         </button>
       </div>
 
-      {/* 2. SIDEBAR DESKTOP */}
+      {/* Sidebar Desktop */}
       <aside className="hidden md:flex fixed md:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-100 flex-col justify-between">
         <div>
           <div className="p-6 flex items-center gap-3">
@@ -101,7 +100,7 @@ export const MainLayout = () => {
         </div>
       </aside>
 
-      {/* 3. BOTTOM NAVIGATION BAR MOBILE */}
+      {/* Mobile Bottom Nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 px-2 py-2 flex items-center justify-around z-50 shadow-lg">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -124,7 +123,6 @@ export const MainLayout = () => {
         })}
       </nav>
 
-      {/* 4. KONTEN UTAMA */}
       <div className="flex-1 flex flex-col min-w-0">
         <header className="hidden md:flex items-center justify-between px-8 py-5 bg-[#FAF9F6]">
           <div className="flex items-center gap-3 ml-auto">
@@ -142,7 +140,6 @@ export const MainLayout = () => {
         </main>
       </div>
 
-      {/* 5. MODAL KONFIRMASI KELUAR (CUSTOM KELUAR APLIKASI) */}
       {isLogoutModalOpen && (
         <div
           className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
