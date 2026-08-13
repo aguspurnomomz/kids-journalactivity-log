@@ -18,7 +18,6 @@ interface Props {
   logs: ActivityLog[];
 }
 
-// Palet warna baru disesuaikan dengan logo (Toska, Oranye, Ungu ceria, Kuning, Hijau mint, Biru)
 const COLORS = ['#01acbf', '#f47946', '#9B5DE5', '#FFD166', '#10b981', '#3b82f6'];
 
 export const AnalyticsCharts = ({ logs }: Props) => {
@@ -88,7 +87,6 @@ export const AnalyticsCharts = ({ logs }: Props) => {
           </div>
         </div>
 
-        {/* Grafik Lingkaran: Distribusi Kategori Latihan */}
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
           <div>
             <h4 className="font-bold text-slate-800 text-sm">Distribusi Kategori Latihan</h4>
@@ -135,7 +133,6 @@ export const AnalyticsCharts = ({ logs }: Props) => {
         </div>
       </div>
 
-      {/* Grafik Batang: Durasi Latihan */}
       <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
         <div>
           <h4 className="font-bold text-slate-800 text-sm">Durasi Latihan (Menit)</h4>

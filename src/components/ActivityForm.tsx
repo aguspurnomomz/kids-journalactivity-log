@@ -30,7 +30,6 @@ export const ActivityForm = ({ childId, onSave, initialCategory, initialActivity
   const [savingCategory, setSavingCategory] = useState(false);
 
   const [activityName, setActivityName] = useState('');
-  // Diubah ke string kosong agar saat input dihapus tidak muncul angka 0 di depan
   const [duration, setDuration] = useState<string>('15');
   const [assistance, setAssistance] = useState<'Independent' | 'Partial Support' | 'Full Support'>('Partial Support');
   const [focusScore, setFocusScore] = useState(4);
@@ -186,7 +185,6 @@ export const ActivityForm = ({ childId, onSave, initialCategory, initialActivity
       child_id: childId,
       activity_category: selectedCategory,
       activity_name: activityName.trim(),
-      // Konversi nilai durasi ke angka saat dikirim ke database
       duration_minutes: duration ? Number(duration) : 0,
       assistance_level: assistance,
       focus_score: focusScore,

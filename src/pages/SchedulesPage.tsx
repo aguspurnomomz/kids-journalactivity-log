@@ -8,8 +8,8 @@ import { ActivityForm } from '../components/ActivityForm';
 interface ScheduleItem {
   id: string;
   child_id: string;
-  schedule_date: string; // Format: YYYY-MM-DD
-  time_slot: string;     // Format: HH:MM
+  schedule_date: string; 
+  time_slot: string;     
   category: string;
   activity_title: string;
   children?: { name: string };
@@ -24,7 +24,7 @@ const DEFAULT_CATEGORIES = [
 
 export const SchedulesPage = () => {
   const { session } = useOutletContext<{ session: any }>();
-  const navigate = useNavigate(); // Diaktifkan kembali untuk navigasi menu Lihat Semua Aktivitas
+  const navigate = useNavigate(); 
   
   const [children, setChildren] = useState<Child[]>([]);
   const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
@@ -152,7 +152,6 @@ export const SchedulesPage = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6 px-3 sm:px-0 pb-12">
-      {/* Banner Utama dengan Tombol Lihat Semua Aktivitas */}
       <div className="bg-[#01acbf] text-white p-5 sm:p-7 rounded-3xl shadow-lg shadow-teal-100/50 relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <Sparkles className="w-24 h-24 sm:w-32 sm:h-32 absolute -right-6 -bottom-6 text-white/10" />
         <div className="relative z-10 max-w-md">
@@ -259,7 +258,7 @@ export const SchedulesPage = () => {
         </button>
       </form>
 
-      {/* TAMPILAN KALENDER BULANAN DENGAN HORIZONTAL SCROLL UNTUK MOBILE */}
+
       <div className="bg-white p-4 sm:p-6 rounded-3xl border border-slate-100 shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
@@ -361,7 +360,6 @@ export const SchedulesPage = () => {
         </div>
       </div>
 
-      {/* MODAL 1: DAFTAR AGENDA PADA TANGGAL TERSEBUT */}
       {dateSchedulesModal && (
         <div
           className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4"
@@ -435,7 +433,6 @@ export const SchedulesPage = () => {
         </div>
       )}
 
-      {/* MODAL 2: FORM INPUT AKTIVITAS */}
       {activeScheduleForLog && (
         <div
           className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto"

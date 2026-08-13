@@ -59,7 +59,6 @@ export const InputActivityPage = () => {
   const fetchLogsAndSchedules = async (childId: string) => {
     if (!childId) return;
 
-    // Ambil riwayat log aktivitas
     const { data: logsData } = await supabase
       .from('activity_logs')
       .select('*')
@@ -67,13 +66,11 @@ export const InputActivityPage = () => {
       .order('logged_at', { ascending: false });
 
     setLogs(logsData || []);
-    setCurrentPage(1); // Reset ke halaman pertama saat ganti anak
+    setCurrentPage(1); 
 
-    // Tentukan nama hari ini dalam bahasa Indonesia
     const daysName = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
     const currentDayName = daysName[new Date().getDay()];
 
-    // Ambil jadwal rutin untuk anak ini di hari ini
     const { data: scheduleData } = await supabase
       .from('activity_schedules')
       .select('*')
@@ -97,20 +94,17 @@ export const InputActivityPage = () => {
   const handleSaved = () => {
     if (selectedChildId) {
       fetchLogsAndSchedules(selectedChildId); 
-      // Reset prefill setelah disimpan
       setPrefilledCategory('');
       setPrefilledName('');
     }
   };
 
-  // Handler saat orang tua klik "Mulai Sesi" dari daftar jadwal
   const handleSelectScheduleToLog = (schedule: ScheduleItem) => {
     setPrefilledCategory(schedule.category);
     setPrefilledName(schedule.activity_title);
     window.scrollTo({ top: 300, behavior: 'smooth' });
   };
 
-  // Kalkulasi data untuk pagination
   const totalPages = Math.ceil(logs.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentLogs = logs.slice(startIndex, startIndex + itemsPerPage);

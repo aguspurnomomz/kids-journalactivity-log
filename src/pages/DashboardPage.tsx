@@ -5,7 +5,7 @@ import { ChildModal } from '../components/ChildModal';
 import { type Child, type ActivityLog } from '../types/database';
 import { Calendar, Plus, Sparkles, Clock, Award, Star, Baby, ArrowRight } from 'lucide-react';
 import { AnalyticsCharts } from '../components/AnalyticsCharts';
-import { requestNotificationPermission, onMessageListener } from '../lib/firebase'; // <-- 1. Ditambahkan onMessageListener
+import { requestNotificationPermission, onMessageListener } from '../lib/firebase'; 
 
 export const DashboardPage = () => {
   const { session } = useOutletContext<{ session: any }>();
